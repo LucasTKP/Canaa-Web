@@ -2,14 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB5nfCb8ZsDr-8WBdLUIpSq17OERIqPM4Y",
-  authDomain: "canaa-afb9f.firebaseapp.com",
-  projectId: "canaa-afb9f",
-  storageBucket: "canaa-afb9f.appspot.com",
-  messagingSenderId: "238964277898",
-  appId: "1:238964277898:web:21ffd433f33e0c32ac2373",
-  measurementId: "G-N2L5ZMV29N",
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);

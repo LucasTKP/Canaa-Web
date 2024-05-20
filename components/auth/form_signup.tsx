@@ -1,26 +1,43 @@
-import { enumEye } from "@/models/enum_eye";
+import { enumEye, enumYesOrNo } from "@/models/enum_eye";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import React from "react";
+import Select, { SingleValue, StylesConfig } from "react-select";
+
+const customStyles: StylesConfig = {
+  control: (provided) => ({
+    ...provided,
+    backgroundColor: "transparent",
+    border: "1px solid black",
+    borderRadius: "8px",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? "#10B981" : "white",
+    color: "black",
+  }),
+};
 
 export default function Form_signup() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
+  const [madeCane, setMadeCane] = React.useState<boolean>(false);
+
+  const handleChange = (selectedOption: any) => {
+    setMadeCane(selectedOption.value);
+  };
 
   return (
     <div>
-      <h1 className="font-poiretOne text-[45px] max-sm:text-[40px] max-xsm:text-[35px] mt-[10px]">
-        Cadastre
-      </h1>
-      <h2 className="font-poiretOne text-[30px] max-sm:text-[27px] max-xsm:text-[25px]">
+      <h1 className="font-poiretOne text-[45px] max-sm:text-[40px] max-xsm:text-[35px]">
         Registre seus dados
-      </h2>
-      <form className="mt-[15px] flex flex-col gap-y-[10px]">
+      </h1>
+      <form className="mt-[10px] flex flex-col gap-y-[10px]">
         <label className="flex flex-col">
           <p className="text-[18px]">Nome Completo</p>
           <input
             placeholder="Digite seu nome "
             type="email"
             required={true}
-            className="p-[10px] rounded-[8px] border-black border-[1px] bg-transparent"
+            className="p-[6px] rounded-[8px] border-black border-[1px] bg-transparent"
           />
         </label>
 
@@ -30,7 +47,7 @@ export default function Form_signup() {
             placeholder="Digite seu email"
             type="email"
             required={true}
-            className="p-[10px] rounded-[8px] border-black border-[1px] bg-transparent"
+            className="p-[6px] rounded-[8px] border-black border-[1px] bg-transparent"
           />
         </label>
 
@@ -41,7 +58,7 @@ export default function Form_signup() {
               placeholder="Digite sua senha"
               type={eye == enumEye.Close ? "password" : "text"}
               required={true}
-              className="p-[10px] rounded-[8px] bg-transparent w-full outline-none"
+              className="p-[6px] rounded-[8px] bg-transparent w-full outline-none"
             />
             {eye == enumEye.Close ? (
               <EyeClosedIcon
@@ -60,10 +77,10 @@ export default function Form_signup() {
           <p className="text-[18px]">Confirme sua senha</p>
           <div className="rounded-[8px] border-black border-[1px] flex items-center">
             <input
-              placeholder="Digite novamente sua senha"
+              placeholder="Digite sua senha novamente"
               type={eye == enumEye.Close ? "password" : "text"}
               required={true}
-              className="p-[10px] rounded-[8px] bg-transparent w-full outline-none"
+              className="p-[6px] rounded-[8px] bg-transparent w-full outline-none"
             />
             {eye == enumEye.Close ? (
               <EyeClosedIcon
@@ -80,20 +97,48 @@ export default function Form_signup() {
         </label>
         <label className="flex flex-col">
           <p className="text-[18px]">Você já fez o acampamento Canaã?</p>
-          <select
-            name="select"
-            className="rounded-[8px] border-black border-[1px] bg-transparent p-[8px] focus:border-blue-500 focus:ring-1 focus:ring-blue-500 appearance-none"
-          >
-            <option value="Não" className="bg-background">
-              Não
-            </option>
-            <option value="Sim" className="bg-background">
-              Sim
-            </option>
-          </select>
+          <Select
+            options={[
+              { value: true, label: "Sim" },
+              { value: false, label: "Não" },
+            ]}
+            required={true}
+            onChange={handleChange}
+            styles={customStyles}
+          />
         </label>
 
-        <button className="w-full mt-[20px] p-[10px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200">
+        {madeCane && (
+          <label className="flex flex-col">
+            <p className="text-[16px]">Em qual ano você fez o acampamento?</p>
+            <Select
+              options={[
+                { value: 2024, label: 2024 },
+                { value: 2023, label: 2023 },
+                { value: 2022, label: 2022 },
+                { value: 2021, label: 2021 },
+                { value: 2020, label: 2020 },
+                { value: 2019, label: 2019 },
+                { value: 2018, label: 2018 },
+                { value: 2017, label: 2017 },
+                { value: 2016, label: 2016 },
+                { value: 2015, label: 2015 },
+                { value: 2014, label: 2014 },
+                { value: 2013, label: 2013 },
+                { value: 2012, label: 2012 },
+                { value: 2011, label: 2011 },
+                { value: 2010, label: 2010 },
+                { value: 2009, label: 2009 },
+                { value: 2008, label: 2008 },
+                { value: 2007, label: 2007 },
+              ]}
+              required={true}
+              styles={customStyles}
+            />
+          </label>
+        )}
+
+        <button className="w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200">
           Cadastrar
         </button>
       </form>

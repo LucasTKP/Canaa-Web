@@ -14,7 +14,7 @@ export default function Auth() {
   );
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center min-h-screen py-[30px]">
       <div className="w-[450px] max-sm:w-[400px] max-xsm:w-[350px] bg-background  drop-shadow-[0_1px_5px_rgba(0,0,0,0.2)] rounded-[10px]">
         <div className="flex justify-between">
           <button
