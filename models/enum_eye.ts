@@ -3,7 +3,3 @@ export enum enumEye {
   "Close",
 }
 
-export enum enumYesOrNo {
-  "Sim",
-  "Não",
-}

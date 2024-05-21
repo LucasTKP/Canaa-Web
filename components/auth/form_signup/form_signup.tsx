@@ -1,9 +1,8 @@
-import { enumEye, enumYesOrNo } from "@/models/enum_eye";
+import { enumEye} from "@/models/enum_eye";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import React from "react";
-import Select, { SingleValue, StylesConfig } from "react-select";
+import Select, { StylesConfig } from "react-select";
 import { onCreateUser } from "./form_signup_controller";
-import Loading from "@/utils/components/loading";
 
 const customStyles: StylesConfig = {
   control: (provided) => ({
@@ -22,7 +21,7 @@ const customStyles: StylesConfig = {
 export default function Form_signup() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
   const [madeCane, setMadeCane] = React.useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const handleChange = (selectedOption: any) => {
     setMadeCane(selectedOption.value);
@@ -35,7 +34,7 @@ export default function Form_signup() {
       </h1>
       <form
         className="mt-[10px] flex flex-col gap-y-[10px]"
-        onSubmit={(e) => onCreateUser({e, setIsLoading})}
+        onSubmit={(e) => onCreateUser({ e, setIsLoading })}
       >
         <label className="flex flex-col">
           <p className="text-[18px]">Nome Completo</p>
@@ -160,7 +159,30 @@ export default function Form_signup() {
           disabled={isLoading}
           className="w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center"
         >
-          {isLoading ? <Loading /> : "Cadastrar"}
+          {isLoading ? (
+            <svg
+              className="mr-3 h-6 w-6 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          ) : (
+            "Cadastrar"
+          )}
         </button>
       </form>
     </div>
