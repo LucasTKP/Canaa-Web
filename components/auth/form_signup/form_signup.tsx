@@ -21,7 +21,7 @@ const customStyles: StylesConfig = {
 export default function Form_signup() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
   const [madeCane, setMadeCane] = React.useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleChange = (selectedOption: any) => {
     setMadeCane(selectedOption.value);
