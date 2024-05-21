@@ -16,6 +16,7 @@ const config: Config = {
       colors: {
         background: "#EBEBEB",
         primary: "#10B981",
+        ...defaultTheme.colors
       },
       screens: {
         'xsm': '475px',

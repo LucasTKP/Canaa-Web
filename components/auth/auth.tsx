@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Form_signin from "./form_signin";
-import Form_signup from "./form_signup";
+import Form_signup from "./form_signup/form_signup";
 
 enum enumOptionAuth {
   "SignIn",

@@ -1,9 +1,11 @@
 import Auth from "@/components/auth/auth";
-import Image from "next/image";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   return (
     <main>
+      <ToastContainer autoClose={3000} />
       <Auth />
     </main>
   );

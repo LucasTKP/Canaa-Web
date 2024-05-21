@@ -2,6 +2,8 @@ import { enumEye, enumYesOrNo } from "@/models/enum_eye";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import React from "react";
 import Select, { SingleValue, StylesConfig } from "react-select";
+import { onCreateUser } from "./form_signup_controller";
+import Loading from "@/utils/components/loading";
 
 const customStyles: StylesConfig = {
   control: (provided) => ({
@@ -20,6 +22,7 @@ const customStyles: StylesConfig = {
 export default function Form_signup() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
   const [madeCane, setMadeCane] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleChange = (selectedOption: any) => {
     setMadeCane(selectedOption.value);
@@ -30,13 +33,19 @@ export default function Form_signup() {
       <h1 className="font-poiretOne text-[45px] max-sm:text-[40px] max-xsm:text-[35px]">
         Registre seus dados
       </h1>
-      <form className="mt-[10px] flex flex-col gap-y-[10px]">
+      <form
+        className="mt-[10px] flex flex-col gap-y-[10px]"
+        onSubmit={(e) => onCreateUser({e, setIsLoading})}
+      >
         <label className="flex flex-col">
           <p className="text-[18px]">Nome Completo</p>
           <input
             placeholder="Digite seu nome "
-            type="email"
+            type="text"
+            name="name"
             required={true}
+            minLength={4}
+            maxLength={100}
             className="p-[6px] rounded-[8px] border-black border-[1px] bg-transparent"
           />
         </label>
@@ -46,6 +55,7 @@ export default function Form_signup() {
           <input
             placeholder="Digite seu email"
             type="email"
+            name="email"
             required={true}
             className="p-[6px] rounded-[8px] border-black border-[1px] bg-transparent"
           />
@@ -57,7 +67,10 @@ export default function Form_signup() {
             <input
               placeholder="Digite sua senha"
               type={eye == enumEye.Close ? "password" : "text"}
+              name="password"
               required={true}
+              minLength={6}
+              maxLength={100}
               className="p-[6px] rounded-[8px] bg-transparent w-full outline-none"
             />
             {eye == enumEye.Close ? (
@@ -79,7 +92,10 @@ export default function Form_signup() {
             <input
               placeholder="Digite sua senha novamente"
               type={eye == enumEye.Close ? "password" : "text"}
+              name="confirmPassword"
               required={true}
+              minLength={6}
+              maxLength={100}
               className="p-[6px] rounded-[8px] bg-transparent w-full outline-none"
             />
             {eye == enumEye.Close ? (
@@ -103,6 +119,7 @@ export default function Form_signup() {
               { value: false, label: "Não" },
             ]}
             required={true}
+            name="madeCane"
             onChange={handleChange}
             styles={customStyles}
           />
@@ -133,13 +150,17 @@ export default function Form_signup() {
                 { value: 2007, label: 2007 },
               ]}
               required={true}
+              name="madeCaneDate"
               styles={customStyles}
             />
           </label>
         )}
 
-        <button className="w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200">
-          Cadastrar
+        <button
+          disabled={isLoading}
+          className="w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center"
+        >
+          {isLoading ? <Loading /> : "Cadastrar"}
         </button>
       </form>
     </div>
