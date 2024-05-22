@@ -1,6 +1,5 @@
-"use client";
 import React from "react";
-import Form_signin from "./form_signin";
+import Form_signin from "./form_signin/form_signin";
 import Form_signup from "./form_signup/form_signup";
 
 enum enumOptionAuth {
@@ -15,7 +14,10 @@ export default function Auth() {
 
   return (
     <div className="flex justify-center items-center min-h-screen py-[30px]">
-      <div className="w-[450px] max-sm:w-[400px] max-xsm:w-[350px] bg-background  drop-shadow-[0_1px_5px_rgba(0,0,0,0.2)] rounded-[10px]">
+      <div
+        style={{ filter: "drop-shadow(0 1px 5px rgba(0, 0, 0, 0.2))" }}
+        className="w-[450px] max-sm:w-[400px] max-xsm:w-[350px] bg-background rounded-[10px]"
+      >
         <div className="flex justify-between">
           <button
             className={`w-full ${

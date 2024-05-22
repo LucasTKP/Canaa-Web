@@ -1,40 +1,47 @@
+import { UserContext } from "@/context/userContext";
 import { createAuthUser } from "@/repositories/userAuth";
+import { createUserFireStore, getUser } from "@/repositories/userFireStore";
 import { formatterError } from "@/utils/formatterError";
 import { UserCredential } from "firebase/auth";
-import { FormEvent } from "react";
+import { FormEvent, useContext } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 interface IPropsOnCreateUser {
   e: FormEvent<HTMLFormElement>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface IDataAuthUser {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  madeCane: boolean;
-  madeCaneDate: number | null;
+  setUser: React.Dispatch<React.SetStateAction<any>>;
+  router: AppRouterInstance;
 }
 
 export async function onCreateUser({
   e,
   setIsLoading,
+  setUser,
+  router,
 }: IPropsOnCreateUser): Promise<UserCredential | null> {
   e.preventDefault();
   setIsLoading(true);
+
   const dataAuthUser = formatDataUser(e);
   if (verifyDataUser(dataAuthUser) && verifyPassword(dataAuthUser)) {
     try {
-      const result = await createAuthUser({
+      const userCredential = await createAuthUser({
         email: dataAuthUser.email,
         password: dataAuthUser.password,
       });
-      setIsLoading(false);
+      createUserFireStore({
+        dataAuthUser,
+        idAuthUser: userCredential.user.uid,
+      });
+      const user = await getUser(userCredential.user.uid);
+      setUser(user);
+      router.push("/home");
       toast.success("Usuário criado com sucesso");
-      return result;
+      return userCredential;
     } catch (error) {
+      console.log(error);
       formatterError(error);
     }
   }
@@ -44,25 +51,21 @@ export async function onCreateUser({
 
 function formatDataUser(e: FormEvent<HTMLFormElement>) {
   const formData = new FormData(e.currentTarget);
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  const confirmPassword = formData.get("confirmPassword") as string;
-  const madeCane =
-    (formData.get("madeCane") as string) == "true" ? true : false;
-
-  const madeCaneDate = madeCane
-    ? (parseInt(formData.get("madeCaneDate") as string) as number)
-    : null;
-
-  return {
-    name,
-    email,
-    password,
-    confirmPassword,
-    madeCane,
-    madeCaneDate,
+  var dataUser: IDataAuthUser = {
+    name: formData.get("name") as string,
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+    confirmPassword: formData.get("confirmPassword") as string,
+    madeCane: (formData.get("madeCane") as string) == "true" ? true : false,
   };
+  if (parseInt(formData.get("madeCaneDate") as string) as number) {
+    dataUser = {
+      ...dataUser,
+      madeCaneDate: parseInt(formData.get("madeCaneDate") as string) as number,
+    };
+  }
+
+  return dataUser;
 }
 
 function verifyDataUser(dataAuthUser: IDataAuthUser): boolean {

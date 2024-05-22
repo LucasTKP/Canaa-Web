@@ -1,8 +1,10 @@
-import { enumEye} from "@/models/enum_eye";
+import { enumEye } from "@/models/enum_eye";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
-import React from "react";
+import React, { useContext } from "react";
 import Select, { StylesConfig } from "react-select";
 import { onCreateUser } from "./form_signup_controller";
+import { UserContext } from "@/context/userContext";
+import { useRouter } from "next/navigation";
 
 const customStyles: StylesConfig = {
   control: (provided) => ({
@@ -22,6 +24,8 @@ export default function Form_signup() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
   const [madeCane, setMadeCane] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { setUser } = useContext(UserContext);
+  const router = useRouter();
 
   const handleChange = (selectedOption: any) => {
     setMadeCane(selectedOption.value);
@@ -34,7 +38,7 @@ export default function Form_signup() {
       </h1>
       <form
         className="mt-[10px] flex flex-col gap-y-[10px]"
-        onSubmit={(e) => onCreateUser({ e, setIsLoading })}
+        onSubmit={(e) => onCreateUser({ e, setIsLoading, setUser, router })}
       >
         <label className="flex flex-col">
           <p className="text-[18px]">Nome Completo</p>
@@ -172,7 +176,7 @@ export default function Form_signup() {
                 cy="12"
                 r="10"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               ></circle>
               <path
                 className="opacity-75"

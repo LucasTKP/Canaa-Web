@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poiret_One, Poppins } from "next/font/google";
 import "./globals.css";
+import { ToastContainer } from "react-toastify";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -28,7 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${poppins.variable} ${poiretOne.variable}`}>{children}</body>
+      <body className={`${poppins.variable} ${poiretOne.variable}`}>
+        <ToastContainer autoClose={3000} />
+        {children}
+      </body>
     </html>
   );
 }
