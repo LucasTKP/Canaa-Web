@@ -1,22 +1,8 @@
-import { getAuthUser, signInUser } from "@/repositories/userAuth";
-import { formatterError } from "@/utils/formatterError";
-import { FirebaseError } from "firebase/app";
+import { signInUser } from "@/repositories/userAuth";
+import { formatterError } from "@/utils/formatter_error";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
-
-interface IVerifyAuthUser {
-  setUser: React.Dispatch<React.SetStateAction<any>>;
-  router: AppRouterInstance;
-}
-
-export async function verifyAuthUser({ setUser, router }: IVerifyAuthUser) {
-  const user = getAuthUser();
-  if (user) {
-    setUser(user);
-    router.push("/home");
-  }
-}
 
 interface IOnSignIn {
   e: FormEvent<HTMLFormElement>;
@@ -41,14 +27,14 @@ export async function onSignIn({
         password: dataUser.password,
       });
       console.log(userAuth);
-    //   if (user) {
-    //     setUser(user);
-    //     router.push("/home");
-    //   } else {
-    //     toast.error("Email ou senha inválidos");
-    //   }
+      //   if (user) {
+      //     setUser(user);
+      //     router.push("/home");
+      //   } else {
+      //     toast.error("Email ou senha inválidos");
+      //   }
     } catch (error) {
-        formatterError(error);
+      formatterError(error);
     }
   }
   setIsLoading(false);

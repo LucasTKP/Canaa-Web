@@ -1,20 +1,17 @@
 import { enumEye } from "@/models/enum_eye";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
-import React, { useContext, useEffect, useState } from "react";
-import { onSignIn, verifyAuthUser } from "./form_signin_controller";
+import React, { useContext, useState } from "react";
+import { onSignIn } from "./form_signin_controller";
 import { UserContext } from "@/context/userContext";
 import { useRouter } from "next/navigation";
-import { ToastContainer } from "react-toastify";
+
+
 
 export default function Form_signin() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
   const [loading, setIsLoading] = useState(false);
   const { setUser } = useContext(UserContext);
   const router = useRouter();
-
-  useEffect(() => {
-    verifyAuthUser({setUser, router});
-  }, []);
 
   return (
     <div>

@@ -4,7 +4,10 @@ import {
   UserCredential,
   User,
   signInWithEmailAndPassword,
+  browserSessionPersistence,
+  onAuthStateChanged,
 } from "firebase/auth";
+import { use } from "react";
 
 interface iCreateAuthUser {
   email: string;
@@ -19,16 +22,15 @@ export async function createAuthUser({
   return result;
 }
 
-export function getAuthUser(): User | null {
-  const user = auth.currentUser;
-
-  if (user) {
-    return user;
-  }
-  return null;
-}
-
-export async  function signInUser({ email, password }: Record<string, string>): Promise<User>{
-  const userCredential = await signInWithEmailAndPassword(auth, email, password)
+export async function signInUser({
+  email,
+  password,
+}: Record<string, string>): Promise<User> {
+  auth.setPersistence(browserSessionPersistence);
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
   return userCredential.user;
 }

@@ -1,15 +1,17 @@
 'use client'
+import { UserContext } from '@/context/userContext';
 import { auth } from '@/lib/firebase_config';
-import React, { useEffect } from 'react'
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import React, { useContext, useEffect } from 'react'
 
 export default function Page() {
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      console.log(user);
-    }
-  }, []);
+  const router = useRouter()
+  const {user, setUser} = useContext(UserContext);
   return (
-    <div>Page</div>
-  )
+    <>
+      <div onClick={() => signOut(auth)}>Page</div>
+      {user?.isAdmin && <div onClick={() => router.push('/admin')}>Admin</div>}
+    </>
+  );
 }

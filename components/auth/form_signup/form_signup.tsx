@@ -24,8 +24,6 @@ export default function Form_signup() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
   const [madeCane, setMadeCane] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const { setUser } = useContext(UserContext);
-  const router = useRouter();
 
   const handleChange = (selectedOption: any) => {
     setMadeCane(selectedOption.value);
@@ -38,7 +36,7 @@ export default function Form_signup() {
       </h1>
       <form
         className="mt-[10px] flex flex-col gap-y-[10px]"
-        onSubmit={(e) => onCreateUser({ e, setIsLoading, setUser, router })}
+        onSubmit={(e) => onCreateUser({ e, setIsLoading})}
       >
         <label className="flex flex-col">
           <p className="text-[18px]">Nome Completo</p>

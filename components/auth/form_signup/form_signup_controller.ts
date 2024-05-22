@@ -1,25 +1,19 @@
-import { UserContext } from "@/context/userContext";
 import { createAuthUser } from "@/repositories/userAuth";
 import { createUserFireStore, getUser } from "@/repositories/userFireStore";
-import { formatterError } from "@/utils/formatterError";
+import { formatterError } from "@/utils/formatter_error";
 import { UserCredential } from "firebase/auth";
-import { FormEvent, useContext } from "react";
+import { FormEvent } from "react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { IDataAuthUser } from "@/models/user";
 
 interface IPropsOnCreateUser {
   e: FormEvent<HTMLFormElement>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setUser: React.Dispatch<React.SetStateAction<any>>;
-  router: AppRouterInstance;
 }
 
 export async function onCreateUser({
   e,
   setIsLoading,
-  setUser,
-  router,
 }: IPropsOnCreateUser): Promise<UserCredential | null> {
   e.preventDefault();
   setIsLoading(true);
@@ -35,9 +29,6 @@ export async function onCreateUser({
         dataAuthUser,
         idAuthUser: userCredential.user.uid,
       });
-      const user = await getUser(userCredential.user.uid);
-      setUser(user);
-      router.push("/home");
       toast.success("Usuário criado com sucesso");
       return userCredential;
     } catch (error) {

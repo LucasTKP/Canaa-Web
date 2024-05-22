@@ -1,6 +1,7 @@
+import { UserModel } from "@/models/user";
 import { Dispatch, SetStateAction, createContext } from "react";
 
 export const UserContext = createContext<{
-  user: undefined;
-  setUser: Dispatch<SetStateAction<undefined>>;
-}>({ user: undefined, setUser: (user) => {} });
+  user: UserModel | undefined;
+  setUser: Dispatch<SetStateAction<UserModel | undefined>>;
+}>(null!);

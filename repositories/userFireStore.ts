@@ -1,4 +1,6 @@
 import { db } from "@/lib/firebase_config";
+import { IDataAuthUser, UserModel } from "@/models/user";
+import { toFormattedString } from "@/utils/formmatter_date";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 
 interface IPropsCreateUserFireStore {
@@ -15,7 +17,7 @@ export async function createUserFireStore({
     name: dataAuthUser.name,
     email: dataAuthUser.email,
     madeCane: dataAuthUser.madeCane,
-    lastPresence: new Date(),
+    lastPresence: toFormattedString(new Date()),
     totalPresence: 0,
     photo: "",
   };
@@ -26,9 +28,10 @@ export async function createUserFireStore({
   await setDoc(doc(db, `users`, idAuthUser), dataUser);
 }
 
-export async function getUser(idUser: string) {
+export async function getUser(idUser: string): Promise<UserModel | null> {
   const docSnap = await getDoc(doc(db, "users", idUser));
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
+    return UserModel.fromJSON(docSnap.data());
   }
+  return null
 }

@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { browserSessionPersistence, getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
