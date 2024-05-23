@@ -15,14 +15,16 @@ const config: Config = {
       },
       colors: {
         background: "#EBEBEB",
-        primary: "#10B981",
-        ...defaultTheme.colors
+        primary: "#479924",
+        secondary: "#e6c414",
+        terciary: "#082f66",
+        red: "#d82323",
+        ...defaultTheme.colors,
       },
       screens: {
-        'xsm': '475px',
+        xsm: "475px",
         ...defaultTheme.screens,
-      }
-      
+      },
     },
   },
   plugins: [],

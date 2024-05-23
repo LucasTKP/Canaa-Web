@@ -1,38 +1,23 @@
 import { signInUser } from "@/repositories/userAuth";
 import { formatterError } from "@/utils/formatter_error";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
 
 interface IOnSignIn {
   e: FormEvent<HTMLFormElement>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setUser: React.Dispatch<React.SetStateAction<any>>;
-  router: AppRouterInstance;
 }
 
-export async function onSignIn({
-  e,
-  setIsLoading,
-  setUser,
-  router,
-}: IOnSignIn) {
+export async function onSignIn({ e, setIsLoading }: IOnSignIn) {
   e.preventDefault();
   setIsLoading(true);
   const dataUser = formatDataUser(e);
   if (verifyDataUser(dataUser)) {
     try {
-      const userAuth = await signInUser({
+      await signInUser({
         email: dataUser.email,
         password: dataUser.password,
       });
-      console.log(userAuth);
-      //   if (user) {
-      //     setUser(user);
-      //     router.push("/home");
-      //   } else {
-      //     toast.error("Email ou senha inválidos");
-      //   }
     } catch (error) {
       formatterError(error);
     }

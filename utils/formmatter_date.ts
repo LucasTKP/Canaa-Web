@@ -1,6 +1,7 @@
-export function toFormattedString(date: Date): string {
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear().toString(); 
-  return `${day}/${month}/${year}`;
+import { Timestamp } from "firebase/firestore";
+
+export function toFormattedTimeStampToDate(dateTimeStamp: Timestamp): Date {
+  const date = dateTimeStamp.toDate();
+  date.setHours(0, 0, 0, 0);
+  return date;
 }

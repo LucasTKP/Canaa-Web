@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import { toFormattedTimeStampToDate } from "@/utils/formmatter_date";
 
 export class UserModel {
   id: string;
@@ -6,7 +6,7 @@ export class UserModel {
   email: string;
   madeCane: boolean;
   madeCaneDate?: number;
-  lastPresence: string;
+  lastPresence: Date;
   totalPresence: number;
   photo: string;
   isAdmin?: boolean;
@@ -17,10 +17,10 @@ export class UserModel {
     email: string,
     madeCane: boolean,
     madeCaneDate: number | undefined,
-    lastPresence: string,
+    lastPresence: Date,
     totalPresence: number,
     photo: string,
-    isAdmin: boolean,
+    isAdmin: boolean
   ) {
     this.id = id;
     this.name = name;
@@ -34,16 +34,18 @@ export class UserModel {
   }
 
   static fromJSON(json: any): UserModel {
+    const date = toFormattedTimeStampToDate(json.lastPresence);
+
     return new UserModel(
       json.id,
       json.name,
       json.email,
       json.madeCane,
       json.madeCaneDate,
-      json.lastPresence,
+      date,
       json.totalPresence,
       json.photo,
-      json.isAdmin ? true : false,
+      json.isAdmin ? true : false
     );
   }
 }

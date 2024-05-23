@@ -9,9 +9,7 @@ import { useRouter } from "next/navigation";
 
 export default function Form_signin() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
-  const [loading, setIsLoading] = useState(false);
-  const { setUser } = useContext(UserContext);
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div>
@@ -22,7 +20,7 @@ export default function Form_signin() {
         Entre com seus dados
       </h2>
       <form
-        onSubmit={(e) => onSignIn({ e, setIsLoading, setUser, router })}
+        onSubmit={(e) => onSignIn({ e, setIsLoading })}
         className="mt-[15px]"
       >
         <label className="flex flex-col">
@@ -63,8 +61,34 @@ export default function Form_signin() {
           Esqueci a senha
         </p>
 
-        <button className="w-full mt-[20px] p-[10px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200">
-          Entrar
+        <button
+          disabled={isLoading}
+          className="w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center text-background"
+        >
+          {isLoading ? (
+            <svg
+              className="mr-3 h-6 w-6 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          ) : (
+            "Entrar"
+          )}
         </button>
       </form>
     </div>

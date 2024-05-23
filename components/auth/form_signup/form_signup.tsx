@@ -15,7 +15,7 @@ const customStyles: StylesConfig = {
   }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isFocused ? "#10B981" : "white",
+    backgroundColor: state.isFocused ? "#479924" : "white",
     color: "black",
   }),
 };
@@ -36,7 +36,7 @@ export default function Form_signup() {
       </h1>
       <form
         className="mt-[10px] flex flex-col gap-y-[10px]"
-        onSubmit={(e) => onCreateUser({ e, setIsLoading})}
+        onSubmit={(e) => onCreateUser({ e, setIsLoading })}
       >
         <label className="flex flex-col">
           <p className="text-[18px]">Nome Completo</p>
@@ -159,7 +159,7 @@ export default function Form_signup() {
 
         <button
           disabled={isLoading}
-          className="w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center"
+          className="w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-background text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center"
         >
           {isLoading ? (
             <svg

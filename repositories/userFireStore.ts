@@ -1,6 +1,5 @@
 import { db } from "@/lib/firebase_config";
 import { IDataAuthUser, UserModel } from "@/models/user";
-import { toFormattedString } from "@/utils/formmatter_date";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 
 interface IPropsCreateUserFireStore {
@@ -17,7 +16,7 @@ export async function createUserFireStore({
     name: dataAuthUser.name,
     email: dataAuthUser.email,
     madeCane: dataAuthUser.madeCane,
-    lastPresence: toFormattedString(new Date()),
+    lastPresence: new Date(),
     totalPresence: 0,
     photo: "",
   };
