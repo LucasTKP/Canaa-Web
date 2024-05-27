@@ -14,7 +14,7 @@ interface IPropsOnCreateUser {
 export async function onCreateUser({
   e,
   setIsLoading,
-}: IPropsOnCreateUser): Promise<UserCredential | null> {
+}: IPropsOnCreateUser){
   e.preventDefault();
   setIsLoading(true);
 
@@ -30,14 +30,12 @@ export async function onCreateUser({
         idAuthUser: userCredential.user.uid,
       });
       toast.success("Usuário criado com sucesso");
-      return userCredential;
     } catch (error) {
       console.log(error);
       formatterError(error);
     }
   }
   setIsLoading(false);
-  return null;
 }
 
 function formatDataUser(e: FormEvent<HTMLFormElement>) {
