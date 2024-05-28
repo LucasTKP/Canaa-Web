@@ -38,8 +38,9 @@ function formatterDataMeeting(
   const formData = new FormData(e.currentTarget);
   const dateString = formData.get("date") as string;
   const password = formData.get("password") as string;
-  const date = new Date(dateString);
-  date.setHours(0, 0, 0, 0);
+
+  const localDateString = `${dateString}T00:00:00`;
+  const date = new Date(localDateString);
 
   var dataMeeting: Omit<MeetingModel, "id"> = {
     theme: formData.get("theme") as string,
@@ -50,6 +51,7 @@ function formatterDataMeeting(
 
   return dataMeeting;
 }
+
 
 function verifyDataMeeting(dataMeeting: Omit<MeetingModel, "id">): boolean {
   if (

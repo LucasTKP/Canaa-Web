@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 export function formatterError(generalError: any) {
-  var error = generalError.message
+  var error = generalError.message;
 
   if (generalError as FirebaseAuthError) {
     switch (generalError.code) {
@@ -24,6 +24,9 @@ export function formatterError(generalError: any) {
         break;
       case "auth/invalid-email":
         error = "Email inválido. Por favor, tente novamente.";
+
+      case "auth/invalid-credential":
+        error = "Credenciais inválidas. Por favor, tente novamente.";
         break;
     }
   }

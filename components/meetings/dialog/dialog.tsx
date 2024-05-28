@@ -61,6 +61,7 @@ function DialogRegisterMeeting() {
                 className="p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
                 name="date"
                 type="date"
+                required
               />
             </label>
 
