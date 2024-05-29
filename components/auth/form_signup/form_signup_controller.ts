@@ -1,10 +1,9 @@
 import { createAuthUser } from "@/repositories/userAuth";
 import { createUserFireStore, getUser } from "@/repositories/userFireStore";
-import { formatterError } from "@/utils/formatter_error";
-import { UserCredential } from "firebase/auth";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
 import { IDataAuthUser } from "@/models/user";
+import { formatterError } from "@/utils/functions/formatter_error";
 
 interface IPropsOnCreateUser {
   e: FormEvent<HTMLFormElement>;

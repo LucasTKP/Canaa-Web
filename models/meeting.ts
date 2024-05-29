@@ -1,4 +1,4 @@
-import { toFormattedTimeStampToDate } from "@/utils/formmatter_date";
+import { toFormattedTimeStampToDate } from "@/utils/functions/formmatter_date";
 
 export class MeetingModel{
   id: string;

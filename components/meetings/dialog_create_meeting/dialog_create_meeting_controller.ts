@@ -1,6 +1,6 @@
 import { MeetingModel } from "@/models/meeting";
 import { createMeeting } from "@/repositories/meetingFireStore";
-import { formatterError } from "@/utils/formatter_error";
+import { formatterError } from "@/utils/functions/formatter_error";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
 
@@ -51,7 +51,6 @@ function formatterDataMeeting(
 
   return dataMeeting;
 }
-
 
 function verifyDataMeeting(dataMeeting: Omit<MeetingModel, "id">): boolean {
   if (

@@ -1,6 +1,10 @@
+import { auth } from "@/lib/firebase_config";
 import { MeetingModel } from "@/models/meeting";
+import { PresenceModel } from "@/models/presence";
+import { UserModel } from "@/models/user";
 import { getMeetings } from "@/repositories/meetingFireStore";
-import { formatterError } from "@/utils/formatter_error";
+import { getPresences } from "@/repositories/presenceFireStore";
+import { formatterError } from "@/utils/functions/formatter_error";
 
 export async function onGetMeeting(
   setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[] | null>>
@@ -8,10 +12,25 @@ export async function onGetMeeting(
   const date = new Date();
   date.setHours(0, 0, 0, 0);
   try {
-    const result = await getMeetings(date);
-    if (result !== null) {
-      setMeetings(result);
-    }
+    const meetings = await getMeetings(date);
+
+    if (meetings !== null) setMeetings(meetings);
+  } catch (error) {
+    formatterError(error);
+  }
+}
+
+export async function onGetPresences(
+  setPresences: React.Dispatch<React.SetStateAction<PresenceModel[] | null>>,
+) {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  const user = auth.currentUser;
+  
+  try {
+    const presences = await getPresences(date, user!.uid);
+
+    if (presences !== null) setPresences(presences);
   } catch (error) {
     formatterError(error);
   }

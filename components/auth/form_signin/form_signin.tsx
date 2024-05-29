@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import { onSignIn } from "./form_signin_controller";
 import { UserContext } from "@/context/userContext";
 import { useRouter } from "next/navigation";
+import Button_loading from "@/utils/components/button_loading";
 
 
 
@@ -60,36 +61,14 @@ export default function Form_signin() {
         <p className="text-[14px] underline text-[#2E86AB] text-end hover:filter hover:brightness-75 duration-200 cursor-pointer">
           Esqueci a senha
         </p>
-
-        <button
-          disabled={isLoading}
-          className="w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center text-background"
-        >
-          {isLoading ? (
-            <svg
-              className="mr-3 h-6 w-6 animate-spin text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-          ) : (
-            "Entrar"
-          )}
-        </button>
+        <Button_loading
+          isLoading={isLoading}
+          className={
+            "w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center text-background"
+          }
+          type={'submit'}
+          title={"Entrar"}
+        />
       </form>
     </div>
   );

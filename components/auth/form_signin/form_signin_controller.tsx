@@ -1,5 +1,5 @@
 import { signInUser } from "@/repositories/userAuth";
-import { formatterError } from "@/utils/formatter_error";
+import { formatterError } from "@/utils/functions/formatter_error";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
 

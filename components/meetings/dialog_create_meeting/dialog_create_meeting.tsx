@@ -2,7 +2,8 @@
 import React, { useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { onCreateMeeting } from "./dialog_controller";
+import { onCreateMeeting } from "./dialog_create_meeting_controller";
+import Button_loading from "@/utils/components/button_loading";
 
 function DialogRegisterMeeting() {
   const [isLoading, setIsLoading] = useState(false);
@@ -74,19 +75,20 @@ function DialogRegisterMeeting() {
                 required
               />
             </label>
-            <div className="mt-[25px] flex justify-end gap-x-[15px]">
+            <div className="mt-[25px] flex w-full justify-end gap-x-[15px]">
               <Dialog.Close asChild>
                 <button className="bg-red text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none">
                   Cancelar
                 </button>
               </Dialog.Close>
-
-              <button
-                type="submit"
-                className="bg-primary text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
-              >
-                Salvar
-              </button>
+              <Button_loading
+                isLoading={isLoading}
+                className={
+                  "bg-primary text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+                }
+                type={"submit"}
+                title={"Salvar"}
+              />
             </div>
           </form>
           <Dialog.Close asChild>

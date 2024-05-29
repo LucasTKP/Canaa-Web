@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase_config";
 import { useRouter } from "next/navigation";
 import { getUser } from "@/repositories/userFireStore";
-import { formatterError } from "@/utils/formatter_error";
+import { formatterError } from "@/utils/functions/formatter_error";
 import { UserModel } from "@/models/user";
 
 export default function RootLayout({
