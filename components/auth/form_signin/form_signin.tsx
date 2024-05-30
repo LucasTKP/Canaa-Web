@@ -14,6 +14,7 @@ export default function Form_signin() {
 
   return (
     <div>
+
       <h1 className="font-poiretOne text-[45px] max-sm:text-[40px] max-xsm:text-[35px] mt-[10px]">
         Login
       </h1>
@@ -66,7 +67,7 @@ export default function Form_signin() {
           className={
             "w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center text-background"
           }
-          type={'submit'}
+          type={"submit"}
           title={"Entrar"}
         />
       </form>

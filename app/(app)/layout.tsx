@@ -1,19 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
-import { UserContext } from "@/context/userContext";
+import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase_config";
 import { useRouter } from "next/navigation";
-import { getUser } from "@/repositories/userFireStore";
-import { formatterError } from "@/utils/functions/formatter_error";
-import { UserModel } from "@/models/user";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [user, setUser] = useState<UserModel>();
   const router = useRouter();
 
   useEffect(() => {
@@ -25,24 +20,12 @@ export default function RootLayout({
         }
       }
       if (userAuth) {
-        try {
-          const dataUser = await getUser(userAuth.uid);
-          if (dataUser) {
-            setUser(dataUser);
-            if (pathname != "/") return;
-            return router.push("/home");
-          }
-        } catch (error) {
-          formatterError(error);
-        }
+        if (pathname != "/") return;
+        return router.push("/home");
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return children ;
 }
