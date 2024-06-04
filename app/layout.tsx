@@ -31,7 +31,10 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${poppins.variable} ${poiretOne.variable}`}>
-        <div className="flex items-center justify-center w-[40px] h-[40px] rounded-full border-[8px] fixed top-[-100] animate-spin bg-none" />
+        <div className="fixed top-[-100px]">
+          <div className="relative flex items-center justify-center w-[40px] h-[40px] rounded-full border-[8px] border-t-gray-400 border-background animate-spin" />
+        </div>
+
         <ToastContainer autoClose={3000} />
         {children}
       </body>
