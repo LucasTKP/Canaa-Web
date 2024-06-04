@@ -7,18 +7,18 @@ import Button_loading from "@/utils/components/button_loading";
 
 function DialogRegisterMeeting() {
   const [isLoading, setIsLoading] = useState(false);
-  const cancelButtonRef = useRef<HTMLButtonElement>(null); // Referência para o botão "Cancelar"
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
   function closeDialog() {
     if (cancelButtonRef.current) {
-      cancelButtonRef.current.click(); // Simula um clique no botão "Cancelar"
+      cancelButtonRef.current.click();
     }
   }
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button className="bg-primary text-background px-[20px] py-[10px] text-[18px] font-[500] rounded-[8px]">
-          Cadastrar Reunião
+        <button className="bg-primary text-background px-[20px] py-[3px] font-[500] rounded-[8px]">
+          Cadastrar
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>

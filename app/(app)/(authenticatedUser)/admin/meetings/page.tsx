@@ -1,4 +1,4 @@
-import Meetings from '@/components/meetings/meetings'
+import Meetings from '@/components/admin/meetings/meetings'
 import React from 'react'
 
 function Page() {

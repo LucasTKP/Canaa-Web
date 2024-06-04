@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/userContext";
 import { useRouter } from "next/navigation";
+import Navbar from "@/components/admin/navbar/navbar";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -14,5 +15,10 @@ export default function RootLayout({
     if (user?.isAdmin === false) router.push("/home");
   }, [router, user]);
 
-  return children ;
+  return (
+    <div className="flex">
+      <Navbar />
+      {children}
+    </div>
+  );
 }

@@ -2,7 +2,7 @@ import { auth } from "@/lib/firebase_config";
 import { MeetingModel } from "@/models/meeting";
 import { PresenceModel } from "@/models/presence";
 import { UserModel } from "@/models/user";
-import { getMeetings } from "@/repositories/meetingFireStore";
+import { getSomeMeetings } from "@/repositories/meetingFireStore";
 import { getPresences } from "@/repositories/presenceFireStore";
 import { formatterError } from "@/utils/functions/formatter_error";
 
@@ -12,7 +12,7 @@ export async function onGetMeeting(
   const date = new Date();
   date.setHours(0, 0, 0, 0);
   try {
-    const meetings = await getMeetings(date);
+    const meetings = await getSomeMeetings(date);
 
     if (meetings !== null) setMeetings(meetings);
   } catch (error) {
