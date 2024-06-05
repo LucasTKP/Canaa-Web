@@ -43,6 +43,7 @@ export default function Form_signin() {
               placeholder="Digite sua senha"
               type={eye == enumEye.Close ? "password" : "text"}
               required={true}
+              minLength={6}
               name="password"
               className="p-[10px] rounded-[8px] bg-transparent w-full outline-none"
             />

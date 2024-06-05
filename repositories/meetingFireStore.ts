@@ -32,15 +32,12 @@ export async function getSomeMeetings(
   return null;
 }
 
-export async function getAllMeetings(): Promise<Array<MeetingModel> | null> {
+export async function getAllMeetings(): Promise<Array<MeetingModel> | []> {
   const meetings: Array<MeetingModel> = [];
 
   const querySnapshot = await getDocs(collection(db, "meetings"));
   querySnapshot.forEach((doc) => {
     meetings.push(MeetingModel.fromJSON(doc.data()));
   });
-  if (meetings.length > 0) {
-    return meetings;
-  }
-  return null;
+  return meetings;
 }

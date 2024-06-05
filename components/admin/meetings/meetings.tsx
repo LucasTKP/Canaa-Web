@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import DialogRegisterMeeting from "./dialog_create_meeting/dialog_create_meeting";
 import TableMeetings from "./table_meetings/table_meetings";
 
 function Meetings() {

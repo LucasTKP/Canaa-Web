@@ -3,16 +3,19 @@ import { createMeeting } from "@/repositories/meetingFireStore";
 import { formatterError } from "@/utils/functions/formatter_error";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
+import { onGetMeetings } from "../table_meetings/table_meeting";
 
 interface OnCreateMeeting {
   e: FormEvent<HTMLFormElement>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[]>>;
   closeDialog: () => void;
 }
 
 export async function onCreateMeeting({
   e,
   setIsLoading,
+  setMeetings,
   closeDialog,
 }: OnCreateMeeting) {
   e.preventDefault();
@@ -23,6 +26,7 @@ export async function onCreateMeeting({
     try {
       await createMeeting(dataMeeting);
       toast.success("Palestra cadastrada com sucesso.");
+      await onGetMeetings({setMeetings});
       closeDialog();
     } catch (error) {
       console.log(error);

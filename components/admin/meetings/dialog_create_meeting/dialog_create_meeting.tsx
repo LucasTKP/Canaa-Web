@@ -4,8 +4,13 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { onCreateMeeting } from "./dialog_create_meeting_controller";
 import Button_loading from "@/utils/components/button_loading";
+import { MeetingModel } from "@/models/meeting";
 
-function DialogRegisterMeeting() {
+interface DialogRegisterMeetingProps {
+  setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[]>>;
+}
+
+function DialogRegisterMeeting({ setMeetings }: DialogRegisterMeetingProps) {
   const [isLoading, setIsLoading] = useState(false);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -17,7 +22,7 @@ function DialogRegisterMeeting() {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button className="bg-primary text-background px-[20px] py-[3px] font-[500] rounded-[8px]">
+        <button className="bg-primary text-background px-[20px] py-[3px] font-[500] rounded-[5px] hover:brightness-95 duration-200">
           Cadastrar
         </button>
       </Dialog.Trigger>
@@ -31,7 +36,9 @@ function DialogRegisterMeeting() {
             Adicione as informações da reunião nos campos abaixo
           </Dialog.Description>
           <form
-            onSubmit={(e) => onCreateMeeting({ e, setIsLoading, closeDialog })}
+            onSubmit={(e) =>
+              onCreateMeeting({ e, setIsLoading, closeDialog, setMeetings })
+            }
             className="flex flex-col items-start gap-y-[10px]"
           >
             <label className="w-full" htmlFor="theme">
@@ -77,18 +84,21 @@ function DialogRegisterMeeting() {
             </label>
             <div className="mt-[25px] flex w-full justify-end gap-x-[15px]">
               <Dialog.Close asChild>
-                <button className="bg-red text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none">
+                <button className="bg-red text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[36px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none">
                   Cancelar
                 </button>
               </Dialog.Close>
-              <Button_loading
-                isLoading={isLoading}
-                className={
-                  "bg-primary text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
-                }
+              <button
+                className="bg-primary text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
                 type={"submit"}
-                title={"Salvar"}
-              />
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="relative flex items-center justify-center w-[25px] h-[25px] rounded-full border-[6px] border-t-gray-400 border-background animate-spin" />
+                ) : (
+                  "Salvar"
+                )}
+              </button>
             </div>
           </form>
           <Dialog.Close asChild>
