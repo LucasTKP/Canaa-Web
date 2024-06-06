@@ -6,6 +6,7 @@ import {
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
@@ -40,4 +41,10 @@ export async function getAllMeetings(): Promise<Array<MeetingModel> | []> {
     meetings.push(MeetingModel.fromJSON(doc.data()));
   });
   return meetings;
+}
+
+export async function editMeeting(dataMeeting: MeetingModel) {
+  await updateDoc(doc(db, "meetings", dataMeeting.id), {
+    ...dataMeeting,
+  });
 }

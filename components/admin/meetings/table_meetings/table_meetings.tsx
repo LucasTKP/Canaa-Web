@@ -1,23 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Header from "./header";
-import { DotsHorizontalIcon, TriangleDownIcon } from "@radix-ui/react-icons";
-import { filterMeetings, onGetMeetings } from "./table_meeting";
+import { TriangleDownIcon } from "@radix-ui/react-icons";
+import {
+  filterMeetings,
+  onGetMeetings,
+  sortDateMeetings,
+} from "./table_meeting";
 import { MeetingModel } from "@/models/meeting";
-import { toFormattedDateToString } from "@/utils/functions/formmatter_date";
+import {
+  toFormattedDateDDMMYYYYToString,
+  toFormattedDateToString,
+  toFormattedDateYYYYMMDDToString,
+} from "@/utils/functions/formmatter_date";
+import DialogEditMeeting from "../dialog_edit_meeting/dialog_edit_meeting";
+
+interface typeFilters {
+  date: "asc" | "desc";
+}
 
 function TableMeetings() {
   const [meetings, setMeetings] = useState<MeetingModel[]>([]);
+  const [meetingSelect, setMeetingSelect] = useState<MeetingModel | null>(null);
   const [textSearch, setTextSearch] = useState<string>("");
+  const [filters, setFilters] = useState<typeFilters>({
+    date: "asc",
+  });
+
   const [pagination, setPagination] = useState({
     page: 1,
     maxPage: 8,
     minPage: 1,
   });
+
   useEffect(() => {
     onGetMeetings({ setMeetings: setMeetings });
   }, []);
+
+  function handleFilterDate() {
+    setFilters({ date: filters.date == "asc" ? "desc" : "asc" });
+    sortDateMeetings({ meetings, action: filters.date });
+  }
+
+  const [width, setWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
+
+  const handleResize = () => {
+    setWidth(window.innerWidth);
+  };
+
+  window.addEventListener("resize", handleResize);
+
   return (
-    <div className="w-[800px] min-h-[400px] border-terciary border-[1px] rounded-[10px] flex flex-col">
+    <div className="max-w-[800px] w-full min-h-[400px] max-xsm:min-h-[365px] border-terciary border-[1px] rounded-[10px] flex flex-col flex-1">
       {meetings.length == 0 ? (
         <div className="w-full h-[400px] flex items-center justify-center">
           <p>Nenhuma reunião foi encontrada</p>
@@ -29,16 +64,22 @@ function TableMeetings() {
             setTextSearch={setTextSearch}
             setMeetings={setMeetings}
           />
-          <div className="grid grid-cols-[50%_37%_10%] gap-[1%] px-[15px] border-y-[1px] border-terciary bg-terciary/20 items-center text-[17px] font-[600] py-[5px] ">
+          <div className="grid grid-cols-[60%_40%] gap-[1%] px-[15px] border-y-[1px] border-terciary bg-terciary/20 items-center text-[17px] max-xsm:text-[16px] font-[600] py-[5px] ">
             <button className="flex items-center">
               <p>Tema</p>
               <TriangleDownIcon />
             </button>
-            <button className="flex items-center justify-center">
+            <button
+              onClick={() => handleFilterDate()}
+              className="flex items-center justify-center"
+            >
               <p>Data</p>
-              <TriangleDownIcon />
+              <TriangleDownIcon
+                className={`${
+                  filters.date == "asc" ? "" : "rotate-180"
+                } duration-200`}
+              />
             </button>
-            <p className="text-center">Opções</p>
           </div>
 
           {filterMeetings({ meetings, textSearch }).length > 0 ? (
@@ -53,16 +94,16 @@ function TableMeetings() {
 
                 result.push(
                   <div
+                    onClick={() => setMeetingSelect(meeting)}
                     key={meeting.id}
-                    className="grid grid-cols-[50%_37%_10%] gap-[1%] px-[15px] py-[3px] border-b-[1px] border-terciary"
+                    className="grid grid-cols-[60%_40%] gap-[1%] px-[15px] py-[3px] border-b-[1px] border-terciary bg-background hover:brightness-90 cursor-pointer max-xsm:text-[15px] "
                   >
                     <p className="truncate">{meeting.theme}</p>
                     <p className="text-center">
-                      {toFormattedDateToString(meeting.date)}
+                      {width > 475
+                        ? toFormattedDateToString(meeting.date)
+                        : toFormattedDateDDMMYYYYToString(meeting.date)}
                     </p>
-                    <button className="cursor-default">
-                      <DotsHorizontalIcon className="mx-auto w-[25px] h-[25px] cursor-pointer" />
-                    </button>
                   </div>
                 );
               }
@@ -112,6 +153,13 @@ function TableMeetings() {
           Próxima
         </button>
       </div>
+      {meetingSelect && (
+        <DialogEditMeeting
+          setMeetings={setMeetings}
+          meetingSelect={meetingSelect}
+          setMeetingSelect={setMeetingSelect}
+        />
+      )}
     </div>
   );
 }

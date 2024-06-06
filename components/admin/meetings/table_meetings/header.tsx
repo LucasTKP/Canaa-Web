@@ -11,12 +11,12 @@ interface HeaderProps {
 
 function Header({ meetings, setTextSearch, setMeetings }: HeaderProps) {
   return (
-    <div className="flex p-[15px] justify-between">
-      <p className="text-[18px] text-terciary/80">
+    <div className="flex p-[15px] max-xsm:p-[10px] justify-between items-center">
+      <p className="text-[18px] max-xsm:text-[14px] text-terciary/80">
         <span className="font-[500] text-terciary">{meetings.length}</span>{" "}
         reuniões
       </p>
-      <label className="flex justify-between border-terciary border-[1px] rounded-[5px] items-center px-[5px] w-[50%]">
+      <label className="flex justify-between border-terciary border-[1px] rounded-[5px] items-center px-[5px] w-[50%] max-xsm:text-[12px]">
         <input
           type="text"
           placeholder="Digite o tema da reunião"
