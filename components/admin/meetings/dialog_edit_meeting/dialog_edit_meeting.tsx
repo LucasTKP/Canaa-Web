@@ -5,6 +5,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { onEditMeeting } from "./dialog_edit_meeting_controller";
 import { MeetingModel } from "@/models/meeting";
 import { toFormattedDateYYYYMMDDToString } from "@/utils/functions/formmatter_date";
+import Select, { StylesConfig } from "react-select";
 
 interface DialogEditMeetingProps {
   setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[]>>;
@@ -18,6 +19,24 @@ function DialogEditMeeting({
   setMeetingSelect,
 }: DialogEditMeetingProps) {
   const [isLoading, setIsLoading] = useState(false);
+  console.log(meetingSelect);
+  const customStyles: StylesConfig = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "transparent",
+      border: "1px solid black",
+      borderRadius: "8px",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#479924" : "white",
+      color: "black",
+    }),
+  };
+  const options = [
+    { value: true, label: "Sim" },
+    { value: false, label: "Não" },
+  ];
 
   return (
     <Dialog.Root open={meetingSelect ? true : false}>
@@ -29,10 +48,10 @@ function DialogEditMeeting({
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay
-          className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0"
+          className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-10"
           onClick={() => setMeetingSelect(null)}
         />
-        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-10">
           <Dialog.Title className="text-[20px] font-medium">
             Edite esta reunião
           </Dialog.Title>
@@ -98,6 +117,20 @@ function DialogEditMeeting({
                 defaultValue={meetingSelect.password}
               />
             </label>
+
+            <label className="w-full" htmlFor="isVisible">
+              <p className="text-[15px] font-[500]">Visivel?</p>
+              <Select
+                options={options}
+                required={true}
+                name="isVisible"
+                styles={customStyles}
+                defaultValue={options.find(
+                  (option) => option.value === meetingSelect.isVisible
+                )}
+              />
+            </label>
+
             <div className="mt-[25px] flex w-full justify-end gap-x-[15px]">
               <Dialog.Close asChild>
                 <button

@@ -10,10 +10,7 @@ interface IPropsOnCreateUser {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export async function onCreateUser({
-  e,
-  setIsLoading,
-}: IPropsOnCreateUser){
+export async function onCreateUser({ e, setIsLoading }: IPropsOnCreateUser) {
   e.preventDefault();
   setIsLoading(true);
 
@@ -45,6 +42,8 @@ function formatDataUser(e: FormEvent<HTMLFormElement>) {
     password: formData.get("password") as string,
     confirmPassword: formData.get("confirmPassword") as string,
     madeCane: (formData.get("madeCane") as string) == "true" ? true : false,
+    photo:
+      "https://firebasestorage.googleapis.com/v0/b/canaa-afb9f.appspot.com/o/imageProfile%2Fjesus.jpg?alt=media&token=2c88b915-676a-46d4-8b5a-887c11ea714c",
   };
   if (parseInt(formData.get("madeCaneDate") as string) as number) {
     dataUser = {

@@ -15,6 +15,7 @@ export async function onGetMeetings({ setMeetings }: onGetMeetingsProps) {
   }
 }
 
+
 interface FilterMeetingsProps {
   meetings: MeetingModel[];
   textSearch: string;
@@ -29,11 +30,11 @@ export function filterMeetings({
   );
   return meetingsFiltered;
 }
-
 interface sortDateMeetingsProps {
   meetings: MeetingModel[];
   action: "asc" | "desc";
 }
+
 
 export function sortDateMeetings({meetings, action} : sortDateMeetingsProps): MeetingModel[] {
   if(action === "asc"){

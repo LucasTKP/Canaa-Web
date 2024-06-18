@@ -51,6 +51,7 @@ function formatterDataMeeting(
     description: formData.get("description") as string,
     date: date,
     password: password.toLocaleLowerCase(),
+    isVisible: false,
   };
 
   return dataMeeting;

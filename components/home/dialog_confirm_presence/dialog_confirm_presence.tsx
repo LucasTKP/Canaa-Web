@@ -16,16 +16,16 @@ interface DialogConfirmPresenceProps {
 function DialogConfirmPresence({ meeting }: DialogConfirmPresenceProps) {
   const { user, setUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
-  const cancelButtonRef = useRef<HTMLButtonElement>(null); // Referência para o botão "Cancelar"
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
   function closeDialog() {
     if (cancelButtonRef.current) {
-      cancelButtonRef.current.click(); // Simula um clique no botão "Cancelar"
+      cancelButtonRef.current.click();
     }
   }
   return (
     <Dialog.Root>
-      <Dialog.Trigger className="p-[6px] text-[14px] bg-primary/50 rounded-[4px]">
+      <Dialog.Trigger className="p-[6px] text-[18px] font-[500] bg-primary text-background rounded-[4px] hover:brightness-95 duration-200">
         Marcar Presença
       </Dialog.Trigger>
       <Dialog.Portal>

@@ -60,6 +60,7 @@ function formatterDataMeeting({
     description: formData.get("description") as string,
     date: date,
     password: password.toLocaleLowerCase(),
+    isVisible: formData.get("isVisible") as string == "true" ? true : false,
   };
 
   return dataMeeting;

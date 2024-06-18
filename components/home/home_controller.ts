@@ -1,7 +1,6 @@
 import { auth } from "@/lib/firebase_config";
 import { MeetingModel } from "@/models/meeting";
 import { PresenceModel } from "@/models/presence";
-import { UserModel } from "@/models/user";
 import { getSomeMeetings } from "@/repositories/meetingFireStore";
 import { getPresences } from "@/repositories/presenceFireStore";
 import { formatterError } from "@/utils/functions/formatter_error";

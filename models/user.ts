@@ -34,7 +34,7 @@ export class UserModel {
   }
 
   static fromJSON(json: any): UserModel {
-    const date = toFormattedTimeStampToDate(json.lastPresence);
+    const lastPresence = toFormattedTimeStampToDate(json.lastPresence);
 
     return new UserModel(
       json.id,
@@ -42,7 +42,7 @@ export class UserModel {
       json.email,
       json.madeCane,
       json.madeCaneDate,
-      date,
+      lastPresence,
       json.totalPresence,
       json.photo,
       json.isAdmin ? true : false
@@ -58,4 +58,5 @@ export interface IDataAuthUser {
   confirmPassword: string;
   madeCane: boolean;
   madeCaneDate?: number;
+  photo: string
 }

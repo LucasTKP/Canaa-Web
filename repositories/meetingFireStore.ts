@@ -20,7 +20,7 @@ export async function createMeeting(dataMeeting: Omit<MeetingModel, "id">) {
 export async function getSomeMeetings(
   date: Date
 ): Promise<Array<MeetingModel> | null> {
-  const q = query(collection(db, "meetings"), where("date", "==", date));
+  const q = query(collection(db, "meetings"), where("date", "==", date), where("isVisible", "==", true));
 
   const querySnapshot = await getDocs(q);
   const meetings: Array<MeetingModel> = [];
