@@ -69,10 +69,11 @@ function DialogRegisterMeeting({ setMeetings }: DialogRegisterMeetingProps) {
             <label htmlFor="date">
               <p className="text-[15px] font-[500]">Data da reunião:</p>
               <input
-                className="p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                className="p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] border-[1px]"
                 name="date"
                 type="date"
                 required
+                defaultValue={new Date().toISOString().split("T")[0]}
               />
             </label>
 

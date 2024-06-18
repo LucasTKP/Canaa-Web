@@ -18,7 +18,7 @@ function Meetings() {
   return (
     meetings && (
       <div className="flex flex-col mt-[70px] bg-terciary/30 p-[15px] rounded-[4px] w-[600px]">
-        <h2 className="font-poiretOne text-[40px] text-terciary">
+        <h2 className="font-poiretOne text-[40px] text-black">
           Reuniões
         </h2>
         {meetings.map((meeting) => {
