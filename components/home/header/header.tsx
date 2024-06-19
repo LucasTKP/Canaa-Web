@@ -10,7 +10,16 @@ export default function Header() {
   const router = useRouter();
   const { user } = useContext(UserContext);
   return (
-    <div className="flex items-center text-[18px] relative">
+    <div className="flex items-center text-[18px] max-lg:text-[16px] relative ">
+      {user?.isAdmin && (
+        <button
+          onClick={() => router.push("/admin")}
+          className="bg-primary px-[10px] py-[3px] rounded-[4px] font-[500] text-background hover:brightness-95 duration-200 absolute left-0 max-xsm:text-[14px]"
+        >
+          Administrador
+        </button>
+      )}
+
       <Image
         src="/images/logo_canaã.png"
         alt="Logo"
@@ -18,22 +27,13 @@ export default function Header() {
         height={80}
         className="mx-auto"
       />
-      <div className="flex gap-x-[20px] absolute right-0">
-        <button
-          onClick={() => signOut(auth)}
-          className="bg-red px-[10px] py-[3px] rounded-[4px] font-[500] text-background hover:brightness-95 duration-200"
-        >
-          Sair
-        </button>
-        {user?.isAdmin && (
-          <button
-            onClick={() => router.push("/admin")}
-            className="bg-primary px-[10px] py-[3px] rounded-[4px] font-[500] text-background hover:brightness-95 duration-200"
-          >
-            Painel de Administrador
-          </button>
-        )}
-      </div>
+
+      <button
+        onClick={() => signOut(auth)}
+        className="bg-red px-[10px] py-[3px] rounded-[4px] font-[500] text-background hover:brightness-95 duration-200 absolute right-0"
+      >
+        Sair
+      </button>
     </div>
   );
 }

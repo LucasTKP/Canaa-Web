@@ -3,7 +3,7 @@ import { createMeeting } from "@/repositories/meetingFireStore";
 import { formatterError } from "@/utils/functions/formatter_error";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
-import { onGetMeetings } from "../table_meetings/table_meeting";
+import { onGetMeetings } from "../table_meetings/table_meetings_controller";
 
 interface OnCreateMeeting {
   e: FormEvent<HTMLFormElement>;

@@ -1,6 +1,6 @@
 import { db } from "@/lib/firebase_config";
 import { IDataAuthUser, UserModel } from "@/models/user";
-import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc, updateDoc, collection, getDocs } from "firebase/firestore";
 
 interface IPropsCreateUserFireStore {
   dataAuthUser: IDataAuthUser;
@@ -33,6 +33,15 @@ export async function getUser(idUser: string): Promise<UserModel | null> {
     return UserModel.fromJSON(docSnap.data());
   }
   return null;
+}
+
+export async function getAllUsers(): Promise<Array<UserModel>> {
+  const querySnapshot = await getDocs(collection(db, "users"));
+  const users: Array<UserModel> = [];
+  querySnapshot.forEach((doc) => {
+    users.push(UserModel.fromJSON(doc.data()));
+  });
+  return users;
 }
 
 export async function updateUser(data: UserModel) {

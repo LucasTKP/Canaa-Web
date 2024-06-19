@@ -1,17 +1,17 @@
 import React from "react";
-import TableMeetings from "./table_meetings/table_meetings";
+import TableUsers from "./table_users/table_users";
 
-function Meetings() {
+function Users() {
   return (
     <div className="w-full md:pr-[15px]">
       <h2 className="font-poiretOne text-[40px] text-terciary mt-[25px]">
-        Reuniões
+        Usuários
       </h2>
       <div className="md:ml-[15px] pr-[15px] mt-[15px] w-full">
-        <TableMeetings />
+        <TableUsers/>
       </div>
     </div>
   );
 }
 
-export default Meetings;
+export default Users;

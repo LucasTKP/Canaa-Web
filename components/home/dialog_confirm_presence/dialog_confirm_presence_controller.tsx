@@ -1,7 +1,7 @@
 import { MeetingModel } from "@/models/meeting";
 import { PresenceModel } from "@/models/presence";
 import { UserModel } from "@/models/user";
-import { createPresence } from "@/repositories/presenceFireStore";
+import { createPresence, getPresences } from "@/repositories/presenceFireStore";
 import { updateUser } from "@/repositories/userFireStore";
 import { formatterError } from "@/utils/functions/formatter_error";
 import { Dispatch, FormEvent, SetStateAction } from "react";
@@ -12,6 +12,7 @@ interface IOnConfirmPresenceProps {
   meeting: MeetingModel;
   user: UserModel;
   setUser: Dispatch<SetStateAction<UserModel | undefined>>;
+  setPresences: React.Dispatch<React.SetStateAction<PresenceModel[] | null>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   closeDialog: () => void;
 }
@@ -22,6 +23,7 @@ export async function onConfirmPresence({
   user,
   setUser,
   setIsLoading,
+  setPresences,
   closeDialog,
 }: IOnConfirmPresenceProps) {
   e.preventDefault();
@@ -41,8 +43,12 @@ export async function onConfirmPresence({
         user,
         lastPresence: meeting.date,
       });
+
+      const presences = await getPresences(meeting.date, user.id);
       setUser(dataNewUser);
+      setPresences(presences);
       setIsLoading(false);
+      toast.success("Presença registrada com sucesso");
       return closeDialog();
     } catch (error) {
       formatterError(error);

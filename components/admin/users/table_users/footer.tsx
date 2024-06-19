@@ -1,9 +1,9 @@
+import { UserModel } from "@/models/user";
 import React from "react";
-import { filterMeetings } from "./table_meetings_controller";
-import { MeetingModel } from "@/models/meeting";
+import { filterUsers } from "./table_users_controller";
 
 interface FooterProps {
-  meetings: MeetingModel[];
+  users: UserModel[];
   textSearch: string;
   pagination: { page: number; maxPage: number; minPage: number };
   setPagination: React.Dispatch<
@@ -11,7 +11,7 @@ interface FooterProps {
   >;
 }
 function Footer({
-  meetings,
+  users,
   textSearch,
   pagination,
   setPagination,
@@ -34,13 +34,13 @@ function Footer({
       <p>
         Página <span className="font-[500]">{pagination.page}</span> de{" "}
         <span className="font-[500]">
-          {Math.ceil(filterMeetings({ meetings, textSearch }).length / 8)}
+          {Math.ceil(filterUsers({ users, textSearch }).length / 8)}
         </span>
       </p>
       <button
         disabled={
           pagination.page >=
-          Math.ceil(filterMeetings({ meetings, textSearch }).length / 8)
+          Math.ceil(filterUsers({ users, textSearch }).length / 8)
         }
         onClick={() =>
           setPagination({

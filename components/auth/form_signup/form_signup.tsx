@@ -1,11 +1,9 @@
 import { enumEye } from "@/models/enum_eye";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
-import React, { useContext } from "react";
+import React from "react";
 import Select, { StylesConfig } from "react-select";
 import { onCreateUser } from "./form_signup_controller";
-import { UserContext } from "@/context/userContext";
-import { useRouter } from "next/navigation";
-import Button_loading from "@/utils/components/button_loading";
+
 
 const customStyles: StylesConfig = {
   control: (provided) => ({
@@ -157,14 +155,19 @@ export default function Form_signup() {
             />
           </label>
         )}
-        <Button_loading
-          isLoading={isLoading}
+        <button
+          disabled={isLoading}
           className={
-            "w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-background text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center"
+            "w-full mt-[20px] p-[6px] rounded-[8px] bg-primary text-[18px] font-[500] hover:brightness-95 duration-200 flex justify-center items-center text-background"
           }
           type={"submit"}
-          title={"Cadastrar"}
-        />
+        >
+          {isLoading ? (
+            <div className="relative flex items-center justify-center w-[30px] h-[30px] rounded-full border-[7px] border-t-gray-400 border-background animate-spin" />
+          ) : (
+            "Cadastrar"
+          )}
+        </button>
       </form>
     </div>
   );

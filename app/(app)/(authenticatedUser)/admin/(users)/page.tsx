@@ -1,10 +1,8 @@
-'use client'
-import { UserContext } from '@/context/userContext'
-import { useRouter } from 'next/navigation'
-import React, { useContext, useEffect } from 'react'
+import Users from '@/components/admin/users/users'
+import React from 'react'
 
 export default function Page() {
   return (
-    <div>page</div>
+    <Users />
   )
 }

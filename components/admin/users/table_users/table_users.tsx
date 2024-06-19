@@ -2,27 +2,22 @@
 import React, { useEffect, useState } from "react";
 import Header from "./header";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
-import {
-  filterMeetings,
-  onGetMeetings,
-  sortDateMeetings,
-} from "./table_meetings_controller";
-import { MeetingModel } from "@/models/meeting";
+import { filterUsers, onGetUsers, sortLastPresenceUsers } from "./table_users_controller";
 import {
   toFormattedDateDDMMYYYYToString,
   toFormattedDateToString,
-  toFormattedDateYYYYMMDDToString,
 } from "@/utils/functions/formmatter_date";
-import DialogEditMeeting from "../dialog_edit_meeting/dialog_edit_meeting";
+import DialogEditUser from "../dialog_edit_user/dialog_edit_user";
 import Footer from "./footer";
+import { UserModel } from "@/models/user";
 
 interface typeFilters {
   date: "asc" | "desc";
 }
 
-function TableMeetings() {
-  const [meetings, setMeetings] = useState<MeetingModel[]>([]);
-  const [meetingSelect, setMeetingSelect] = useState<MeetingModel | null>(null);
+function TableUsers() {
+  const [users, setUsers] = useState<UserModel[]>([]);
+  const [userSelect, setUserSelect] = useState<UserModel | null>(null);
   const [textSearch, setTextSearch] = useState<string>("");
   const [filters, setFilters] = useState<typeFilters>({
     date: "asc",
@@ -35,12 +30,12 @@ function TableMeetings() {
   });
 
   useEffect(() => {
-    onGetMeetings({ setMeetings: setMeetings });
+    onGetUsers({ setUsers:setUsers });
   }, []);
 
   function handleFilterDate() {
     setFilters({ date: filters.date == "asc" ? "desc" : "asc" });
-    sortDateMeetings({ meetings, action: filters.date });
+    sortLastPresenceUsers({ users, action: filters.date });
   }
 
   const [width, setWidth] = useState(
@@ -55,14 +50,10 @@ function TableMeetings() {
 
   return (
     <div className="max-w-[800px] w-full min-h-[400px] max-xsm:min-h-[365px] border-terciary border-[1px] rounded-[10px] flex flex-col flex-1">
-      <Header
-        meetings={meetings}
-        setTextSearch={setTextSearch}
-        setMeetings={setMeetings}
-      />
-      {meetings.length == 0 ? (
+      <Header users={users} setTextSearch={setTextSearch} />
+      {users.length == 0 ? (
         <div className="w-full h-[400px] flex items-center justify-center">
-          <p>Nenhuma reunião foi encontrada</p>
+          <p>Nenhum usuário foi encontrado</p>
         </div>
       ) : (
         <>
@@ -81,27 +72,27 @@ function TableMeetings() {
             </button>
           </div>
 
-          {filterMeetings({ meetings, textSearch }).length > 0 ? (
+          {filterUsers({ users, textSearch }).length > 0 ? (
             (() => {
               const result = [];
-              const filteredMeetings = filterMeetings({ meetings, textSearch });
-              for (let i = 0; i < filteredMeetings.length; i++) {
-                const meeting = filteredMeetings[i];
+              const filteredUsers = filterUsers({ users, textSearch });
+              for (let i = 0; i < filteredUsers.length; i++) {
+                const user = filteredUsers[i];
 
                 if (i + 1 < pagination.minPage) continue;
                 if (i + 1 > pagination.maxPage) break;
 
                 result.push(
                   <div
-                    onClick={() => setMeetingSelect(meeting)}
-                    key={meeting.id}
+                    onClick={() => setUserSelect(user)}
+                    key={user.id}
                     className="grid grid-cols-[60%_40%] gap-[1%] px-[15px] py-[3px] border-b-[1px] border-terciary bg-background hover:brightness-90 cursor-pointer max-xsm:text-[15px] "
                   >
-                    <p className="truncate">{meeting.theme}</p>
+                    <p className="truncate">{user.name}</p>
                     <p className="text-center">
                       {width > 475
-                        ? toFormattedDateToString(meeting.date)
-                        : toFormattedDateDDMMYYYYToString(meeting.date)}
+                        ? toFormattedDateToString(user.lastPresence)
+                        : toFormattedDateDDMMYYYYToString(user.lastPresence)}
                     </p>
                   </div>
                 );
@@ -114,22 +105,22 @@ function TableMeetings() {
             </p>
           )}
           <Footer
-            meetings={meetings}
+            users={users}
             textSearch={textSearch}
             pagination={pagination}
             setPagination={setPagination}
           />
         </>
       )}
-      {meetingSelect && (
-        <DialogEditMeeting
-          setMeetings={setMeetings}
-          meetingSelect={meetingSelect}
-          setMeetingSelect={setMeetingSelect}
+      {/* {userSelect && (
+        <DialogEditUser
+          setUsers={setUsers}
+          userSelect={userSelect}
+          setUserSelect={setUserSelect}
         />
-      )}
+      )} */}
     </div>
   );
 }
 
-export default TableMeetings;
+export default TableUsers;

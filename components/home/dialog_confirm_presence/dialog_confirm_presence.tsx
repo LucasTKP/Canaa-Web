@@ -2,18 +2,21 @@
 import React, { useContext, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-// import { onCreateMeeting } from "./dialog_create_meeting_controller";
-import Button_loading from "@/utils/components/button_loading";
 import { MeetingModel } from "@/models/meeting";
 import { toFormattedDateToString } from "@/utils/functions/formmatter_date";
 import { onConfirmPresence } from "./dialog_confirm_presence_controller";
 import { UserContext } from "@/context/userContext";
+import { PresenceModel } from "@/models/presence";
 
 interface DialogConfirmPresenceProps {
   meeting: MeetingModel;
+  setPresences: React.Dispatch<React.SetStateAction<PresenceModel[] | null>>;
 }
 
-function DialogConfirmPresence({ meeting }: DialogConfirmPresenceProps) {
+function DialogConfirmPresence({
+  meeting,
+  setPresences,
+}: DialogConfirmPresenceProps) {
   const { user, setUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
@@ -25,7 +28,7 @@ function DialogConfirmPresence({ meeting }: DialogConfirmPresenceProps) {
   }
   return (
     <Dialog.Root>
-      <Dialog.Trigger className="p-[6px] text-[18px] font-[500] bg-primary text-background rounded-[4px] hover:brightness-95 duration-200">
+      <Dialog.Trigger className="p-[6px] max-sm:p-[4px] text-[18px] max-xl:text-[16px] font-[500] bg-primary text-background rounded-[4px] hover:brightness-95 duration-200">
         Marcar Presença
       </Dialog.Trigger>
       <Dialog.Portal>
@@ -44,6 +47,7 @@ function DialogConfirmPresence({ meeting }: DialogConfirmPresenceProps) {
                 meeting,
                 user: user!,
                 setUser,
+                setPresences,
                 setIsLoading,
                 closeDialog,
               })
@@ -80,14 +84,20 @@ function DialogConfirmPresence({ meeting }: DialogConfirmPresenceProps) {
                   Cancelar
                 </button>
               </Dialog.Close>
-              <Button_loading
-                isLoading={isLoading}
+
+              <button
+                disabled={isLoading}
                 className={
                   "bg-primary text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
                 }
                 type={"submit"}
-                title={"Confirmar"}
-              />
+              >
+                {isLoading ? (
+                  <div className="relative flex items-center justify-center w-[25px] h-[25px] rounded-full border-[6px] border-t-gray-400 border-background animate-spin" />
+                ) : (
+                  "Confirmar"
+                )}
+              </button>
             </div>
           </form>
           <Dialog.Close asChild>

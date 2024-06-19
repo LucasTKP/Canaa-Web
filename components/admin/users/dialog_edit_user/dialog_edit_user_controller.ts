@@ -1,25 +1,25 @@
 import { MeetingModel } from "@/models/meeting";
+import { UserModel } from "@/models/user";
 import { createMeeting, editMeeting } from "@/repositories/meetingFireStore";
 import { formatterError } from "@/utils/functions/formatter_error";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
-import { onGetMeetings } from "../table_meetings/table_meetings_controller";
 
-interface OnEditMeeting {
+interface OnEditUser {
   e: FormEvent<HTMLFormElement>;
-  meeting: MeetingModel;
+  user: UserModel;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[]>>;
   setMeetingSelect: React.Dispatch<React.SetStateAction<MeetingModel | null>>;
 }
 
-export async function onEditMeeting({
+export async function onEditUser({
   e,
   meeting,
   setIsLoading,
   setMeetings,
   setMeetingSelect,
-}: OnEditMeeting) {
+}: OnEditUser) {
   e.preventDefault();
   setIsLoading(true);
 

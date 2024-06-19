@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { MeetingModel } from "@/models/meeting";
 import { PresenceModel } from "@/models/presence";
 import { toFormattedDateToString } from "@/utils/functions/formmatter_date";
@@ -17,8 +17,8 @@ function Meetings() {
 
   return (
     meetings && (
-      <div className="flex flex-col mt-[70px] bg-terciary/30 p-[15px] rounded-[4px] w-[600px]">
-        <h2 className="font-poiretOne text-[40px] text-black">
+      <div className="flex flex-col mt-[70px] max-xl:mt-[45px] max-md:mt-[30px] bg-terciary/30 p-[15px] rounded-[4px] w-[600px] max-xl:w-[430px] max-lg:w-[360px] max-md:w-full">
+        <h2 className="font-poiretOne text-[40px] max-xl:[36px] max-lg:text-[34px] max-md:text-[32px] max-sm:text-[30px text-black">
           Reuniões
         </h2>
         {meetings.map((meeting) => {
@@ -28,7 +28,7 @@ function Meetings() {
           return (
             <div
               key={meeting.id}
-              className="flex flex-col gap-y-[5px] p-[15px] border-[2px] border-gray-500 rounded-[5px] mt-[10px] text-[20px]"
+              className="flex flex-col gap-y-[5px] p-[15px] border-[2px] border-gray-500 rounded-[5px] mt-[10px] text-[20px] max-xl:text-[18px]"
             >
               <p>
                 <span className="font-[500]">Data:</span>
@@ -39,9 +39,14 @@ function Meetings() {
                 {meeting.theme}
               </p>
               {isPresenceConfirmeted ? (
-                <p className="text-[#00B37E]">Presença confirmada</p>
+                <div className="p-[6px] max-sm:p-[4px] text-[18px] max-xl:text-[16px] font-[500] bg-[#193218] text-background rounded-[4px] hover:brightness-95 duration-200 text-center">
+                  Presença Registrada
+                </div>
               ) : (
-                <DialogConfirmPresence meeting={meeting} />
+                <DialogConfirmPresence
+                  meeting={meeting}
+                  setPresences={setPresences}
+                />
               )}
             </div>
           );

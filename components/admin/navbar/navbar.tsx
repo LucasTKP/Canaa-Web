@@ -50,6 +50,7 @@ function Navbar() {
         <Link
           href={"/admin"}
           className="w-full flex justify-center h-[35px] relative mt-[30px]"
+          onClick={() => setMenuIsOpen(false)}
         >
           {path === "/admin" && (
             <div className="w-[5px] h-[130%] absolute bg-primary rounded-full left-0 top-1/2 transform -translate-y-1/2" />
@@ -66,6 +67,7 @@ function Navbar() {
         <Link
           href={"/admin/meetings"}
           className="w-full flex justify-center h-[35px] relative mt-[30px]"
+          onClick={() => setMenuIsOpen(false)}
         >
           {path === "/admin/meetings" && (
             <div className="w-[5px] h-[130%] absolute bg-primary rounded-full left-0 top-1/2 transform -translate-y-1/2" />
