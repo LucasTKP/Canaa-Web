@@ -53,7 +53,7 @@ function Meetings() {
           );
         })
       : 
-      <p className="text-[20px] py-[10px]">Nenhuma reunião cadastrada para o dia de hoje</p>
+      <p className="text-[20px] py-[10px]">Nenhuma reunião foi encontrada</p>
       }
       </div>
     )
