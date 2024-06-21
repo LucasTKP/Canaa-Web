@@ -1,35 +1,36 @@
-import { MeetingModel } from "@/models/meeting";
 import { UserModel } from "@/models/user";
-import { createMeeting, editMeeting } from "@/repositories/meetingFireStore";
 import { formatterError } from "@/utils/functions/formatter_error";
+import { User } from "firebase/auth";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
+import { onGetUsers } from "../table_users/table_users_controller";
+import { updateUser } from "@/repositories/userFireStore";
 
 interface OnEditUser {
   e: FormEvent<HTMLFormElement>;
   user: UserModel;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[]>>;
-  setMeetingSelect: React.Dispatch<React.SetStateAction<MeetingModel | null>>;
+  setUsers: React.Dispatch<React.SetStateAction<UserModel[]>>;
+  setUserSelect: React.Dispatch<React.SetStateAction<UserModel | null>>;
 }
 
 export async function onEditUser({
   e,
-  meeting,
+  user,
   setIsLoading,
-  setMeetings,
-  setMeetingSelect,
+  setUsers,
+  setUserSelect,
 }: OnEditUser) {
   e.preventDefault();
   setIsLoading(true);
 
-  const dataMeeting = formatterDataMeeting({meeting, e});
-  if (verifyDataMeeting(dataMeeting)) {
+  const dataUser = formatterDataUser({ user, e });
+  if (verifyDataUser(dataUser)) {
     try {
-      await editMeeting(dataMeeting);
+      await updateUser(dataUser);
       toast.success("Palestra editada com sucesso.");
-      await onGetMeetings({ setMeetings });
-      setMeetingSelect(null);
+      await onGetUsers({ setUsers });
+      setUserSelect(null);
     } catch (error) {
       console.log(error);
       formatterError(error);
@@ -38,40 +39,48 @@ export async function onEditUser({
   setIsLoading(false);
 }
 
-interface formatterDataMeetingProps {
-  meeting: MeetingModel;
+interface formatterDataUserProps {
+  user: UserModel;
   e: FormEvent<HTMLFormElement>;
 }
 
-function formatterDataMeeting({
-  meeting,
-  e,
-}: formatterDataMeetingProps): MeetingModel {
+function formatterDataUser({ user, e }: formatterDataUserProps): UserModel {
   const formData = new FormData(e.currentTarget);
-  const dateString = formData.get("date") as string;
-  const password = formData.get("password") as string;
+  const lastPresenceString = formData.get("lastPresence") as string;
+  const localDateString = `${lastPresenceString}T00:00:00`;
+  const lastPresence = new Date(localDateString);
 
-  const localDateString = `${dateString}T00:00:00`;
-  const date = new Date(localDateString);
+  const madeCaneYear =
+    formData.get("madeCaneYear") as string != null
+      ? parseInt(formData.get("madeCaneYear") as string)
+      : null;
 
-  var dataMeeting: MeetingModel = {
-    id: meeting.id,
-    theme: formData.get("theme") as string,
-    description: formData.get("description") as string,
-    date: date,
-    password: password.toLocaleLowerCase(),
-    isVisible: formData.get("isVisible") as string == "true" ? true : false,
+  var dataUser: UserModel = {
+    id: user.id,
+    name: formData.get("name") as string,
+    email: formData.get("email") as string,
+    madeCane: (formData.get("madeCane") as string) == "true" ? true : false,
+    lastPresence: lastPresence,
+    totalPresence: parseInt(formData.get("totalPresence") as string),
+    photo: user.photo,
   };
 
-  return dataMeeting;
+
+
+  madeCaneYear != null && (dataUser.madeCaneYear = madeCaneYear);
+
+  return dataUser;
 }
 
-function verifyDataMeeting(dataMeeting: Omit<MeetingModel, "id">): boolean {
+function verifyDataUser(dataUser: UserModel): boolean {
   if (
-    dataMeeting.theme.length > 0 &&
-    dataMeeting.description.length > 0 &&
-    dataMeeting.password.length > 0 &&
-    dataMeeting.date != null
+    dataUser.id &&
+    dataUser.name &&
+    dataUser.email &&
+    dataUser.madeCane != null &&
+    dataUser.lastPresence != null &&
+    dataUser.totalPresence != null &&
+    dataUser.photo
   ) {
     return true;
   }

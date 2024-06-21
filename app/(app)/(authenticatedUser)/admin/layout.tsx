@@ -17,8 +17,12 @@ export default function RootLayout({
 
   return (
     <div className="flex">
-      <Navbar />
-      {children}
+      {user?.isAdmin && (
+        <>
+          <Navbar />
+          {children}
+        </>
+      )}
     </div>
   );
 }

@@ -38,10 +38,10 @@ function DataUser() {
             </p>
           )}
 
-          {user?.madeCaneDate && (
+          {user?.madeCaneYear && (
             <p>
               <span className="font-[500]">Fez o Canaã:</span>{" "}
-              {user?.madeCaneDate}
+              {user?.madeCaneYear}
             </p>
           )}
         </div>

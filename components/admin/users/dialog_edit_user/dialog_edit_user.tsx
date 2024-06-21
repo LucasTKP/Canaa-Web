@@ -3,23 +3,24 @@ import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { onEditUser } from "./dialog_edit_user_controller";
-import { MeetingModel } from "@/models/meeting";
 import { toFormattedDateYYYYMMDDToString } from "@/utils/functions/formmatter_date";
 import Select, { StylesConfig } from "react-select";
+import { UserModel } from "@/models/user";
 
-interface DialogEditMeetingProps {
-  setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[]>>;
-  meetingSelect: MeetingModel;
-  setMeetingSelect: React.Dispatch<React.SetStateAction<MeetingModel | null>>;
+interface DialogEditUserModelProps {
+  setUsers: React.Dispatch<React.SetStateAction<UserModel[]>>;
+  userSelect: UserModel;
+  setUserSelect: React.Dispatch<React.SetStateAction<UserModel | null>>;
 }
 
 function DialogEditUser({
-  setMeetings,
-  meetingSelect,
-  setMeetingSelect,
-}: DialogEditMeetingProps) {
+  setUsers,
+  userSelect,
+  setUserSelect,
+}: DialogEditUserModelProps) {
   const [isLoading, setIsLoading] = useState(false);
-  console.log(meetingSelect);
+  const [madeCane, setMadeCane] = React.useState<boolean>(userSelect.madeCane);
+
   const customStyles: StylesConfig = {
     control: (provided) => ({
       ...provided,
@@ -38,8 +39,33 @@ function DialogEditUser({
     { value: false, label: "Não" },
   ];
 
+  const options2 = [
+    { value: 2024, label: 2024 },
+    { value: 2023, label: 2023 },
+    { value: 2022, label: 2022 },
+    { value: 2021, label: 2021 },
+    { value: 2020, label: 2020 },
+    { value: 2019, label: 2019 },
+    { value: 2018, label: 2018 },
+    { value: 2017, label: 2017 },
+    { value: 2016, label: 2016 },
+    { value: 2015, label: 2015 },
+    { value: 2014, label: 2014 },
+    { value: 2013, label: 2013 },
+    { value: 2012, label: 2012 },
+    { value: 2011, label: 2011 },
+    { value: 2010, label: 2010 },
+    { value: 2009, label: 2009 },
+    { value: 2008, label: 2008 },
+    { value: 2007, label: 2007 },
+  ];
+
+  const handleChange = (selectedOption: any) => {
+    setMadeCane(selectedOption.value);
+  };
+
   return (
-    <Dialog.Root open={meetingSelect ? true : false}>
+    <Dialog.Root open={userSelect ? true : false}>
       <Dialog.Trigger
         asChild
         className="bg-primary text-background px-[20px] py-[3px] font-[500] rounded-[5px] hover:brightness-95 duration-200"
@@ -49,92 +75,110 @@ function DialogEditUser({
       <Dialog.Portal>
         <Dialog.Overlay
           className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-10"
-          onClick={() => setMeetingSelect(null)}
+          onClick={() => setUserSelect(null)}
         />
         <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-10">
           <Dialog.Title className="text-[20px] font-medium">
-            Edite esta reunião
+            Edite este usuário
           </Dialog.Title>
           <Dialog.Description className="mt-[10px] mb-5 text-[15px]">
-            Modifique as informações da reunião nos campos abaixo
+            Modifique as informações do usuário nos campos abaixo
           </Dialog.Description>
           <form
             onSubmit={(e) =>
               onEditUser({
                 e,
-                meeting: meetingSelect,
+                user: userSelect,
                 setIsLoading,
-                setMeetingSelect,
-                setMeetings,
+                setUserSelect,
+                setUsers,
               })
             }
             className="flex flex-col items-start gap-y-[10px]"
           >
-            <label className="w-full" htmlFor="theme">
-              <p className="text-[15px] font-[500]">Tema:</p>
+            <label className="w-full" htmlFor="name">
+              <p className="text-[15px] font-[500]">Nome:</p>
               <input
                 className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] placeholder:text-black/60"
-                name="theme"
-                placeholder="Adicione o tema da reunião"
+                name="name"
+                placeholder="Escreva o nome do usuário"
                 type="text"
                 required
-                defaultValue={meetingSelect.theme}
+                defaultValue={userSelect.name}
               />
             </label>
 
-            <label className="w-full" htmlFor="description">
-              <p className="text-[15px] font-[500]">Descrição:</p>
-              <textarea
-                className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] placeholder:text-black/60"
-                name="description"
-                rows={4}
-                placeholder="Adicione a descrição da reunião"
-                required
-                defaultValue={meetingSelect.description}
-              />
-            </label>
-
-            <label htmlFor="date">
-              <p className="text-[15px] font-[500]">Data da reunião:</p>
-              <input
-                className="p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                name="date"
-                type="date"
-                required
-                defaultValue={toFormattedDateYYYYMMDDToString(
-                  meetingSelect.date
-                )}
-              />
-            </label>
-
-            <label className="w-full" htmlFor="password">
-              <p className="text-[15px] font-[500]">Password:</p>
+            <label className="w-full" htmlFor="email">
+              <p className="text-[15px] font-[500]">Email:</p>
               <input
                 className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] placeholder:text-black/60"
-                name="password"
-                placeholder="Digite a senha da reunião"
+                name="email"
+                placeholder="Escreva o email do usuário"
                 required
-                defaultValue={meetingSelect.password}
+                defaultValue={userSelect.email}
               />
             </label>
 
-            <label className="w-full" htmlFor="isVisible">
-              <p className="text-[15px] font-[500]">Visivel?</p>
-              <Select
-                options={options}
-                required={true}
-                name="isVisible"
-                styles={customStyles}
-                defaultValue={options.find(
-                  (option) => option.value === meetingSelect.isVisible
-                )}
-              />
-            </label>
+            <div className="flex items-center justify-between w-full">
+              <label htmlFor="totalPresence w-[48%]">
+                <p className="text-[15px] font-[500]">Total de Presença:</p>
+                <input
+                  className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                  name="totalPresence"
+                  type="number"
+                  required
+                  defaultValue={userSelect.totalPresence}
+                />
+              </label>
+              <label htmlFor="lastPresence" className="w-[48%]">
+                <p className="text-[15px] font-[500]">Última presença:</p>
+                <input
+                  className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                  name="lastPresence"
+                  type="date"
+                  required
+                  defaultValue={toFormattedDateYYYYMMDDToString(
+                    userSelect.lastPresence
+                  )}
+                />
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between w-full">
+              <label className="flex flex-col w-[48%]">
+                <p className="text-[18px]"> já fez o acampamento?</p>
+                <Select
+                  options={options}
+                  required={true}
+                  name="madeCane"
+                  onChange={handleChange}
+                  styles={customStyles}
+                  defaultValue={options.find(
+                    (option) => option.value === userSelect.madeCane
+                  )}
+                />
+              </label>
+
+              {madeCane && (
+                <label className="flex flex-col w-[48%]">
+                  <p className="text-[16px]">Em que ano?</p>
+                  <Select
+                    options={options2}
+                    required={true}
+                    name="madeCaneYear"
+                    styles={customStyles}
+                    defaultValue={options2.find(
+                      (option) => option.value === userSelect.madeCaneYear
+                    )}
+                  />
+                </label>
+              )}
+            </div>
 
             <div className="mt-[25px] flex w-full justify-end gap-x-[15px]">
               <Dialog.Close asChild>
                 <button
-                  onClick={() => setMeetingSelect(null)}
+                  onClick={() => setUserSelect(null)}
                   className="bg-red text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[36px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
                 >
                   Cancelar
@@ -155,7 +199,7 @@ function DialogEditUser({
           </form>
           <Dialog.Close asChild>
             <button
-              onClick={() => setMeetingSelect(null)}
+              onClick={() => setUserSelect(null)}
               className="absolute top-[10px] right-[10px] h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
               aria-label="Close"
             >

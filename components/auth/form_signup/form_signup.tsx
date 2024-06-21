@@ -150,7 +150,7 @@ export default function Form_signup() {
                 { value: 2007, label: 2007 },
               ]}
               required={true}
-              name="madeCaneDate"
+              name="madeCaneYear"
               styles={customStyles}
             />
           </label>

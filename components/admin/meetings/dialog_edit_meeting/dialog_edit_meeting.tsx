@@ -19,7 +19,6 @@ function DialogEditMeeting({
   setMeetingSelect,
 }: DialogEditMeetingProps) {
   const [isLoading, setIsLoading] = useState(false);
-  console.log(meetingSelect);
   const customStyles: StylesConfig = {
     control: (provided) => ({
       ...provided,

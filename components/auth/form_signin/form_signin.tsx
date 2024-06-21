@@ -1,11 +1,12 @@
 import { enumEye } from "@/models/enum_eye";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
-import { onSignIn } from "./form_signin_controller";
+import { onSignIn, sendPasswordReset } from "./form_signin_controller";
 
 export default function Form_signin() {
   const [eye, setEye] = React.useState<enumEye>(enumEye.Close);
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
 
   return (
     <div>
@@ -27,6 +28,7 @@ export default function Form_signin() {
             required={true}
             name="email"
             className="p-[10px] rounded-[8px] border-black border-[1px] bg-transparent"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </label>
 
@@ -54,7 +56,10 @@ export default function Form_signin() {
             )}
           </div>
         </label>
-        <p className="text-[14px] underline text-[#2E86AB] text-end hover:filter hover:brightness-75 duration-200 cursor-pointer">
+        <p
+          onClick={() => sendPasswordReset(email)}
+          className="text-[14px] underline text-[#2E86AB] text-end hover:filter hover:brightness-75 duration-200 cursor-pointer"
+        >
           Esqueci a senha
         </p>
         <button

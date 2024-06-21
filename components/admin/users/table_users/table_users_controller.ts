@@ -8,7 +8,7 @@ interface onGetUsersProps {
 export async function onGetUsers({ setUsers }: onGetUsersProps) {
   try {
     const users = await getAllUsers();
-    setUsers(users);
+    setUsers(sortPresencesUsers({ users, action: "desc" }));
   } catch (error) {
     console.log(error);
     formatterError(error);
@@ -44,5 +44,16 @@ export function sortLastPresenceUsers({
     return users.sort(
       (a, b) => b.lastPresence.getTime() - a.lastPresence.getTime()
     );
+  }
+}
+
+export function sortPresencesUsers({
+  users,
+  action,
+}: sortDateUsersProps): UserModel[] {
+  if (action === "asc") {
+    return users.sort((a, b) => a.totalPresence - b.totalPresence);
+  } else {
+    return users.sort((a, b) => b.totalPresence - a.totalPresence);
   }
 }

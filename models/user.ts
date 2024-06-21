@@ -5,7 +5,7 @@ export class UserModel {
   name: string;
   email: string;
   madeCane: boolean;
-  madeCaneDate?: number;
+  madeCaneYear?: number;
   lastPresence: Date;
   totalPresence: number;
   photo: string;
@@ -16,7 +16,7 @@ export class UserModel {
     name: string,
     email: string,
     madeCane: boolean,
-    madeCaneDate: number | undefined,
+    madeCaneYear: number | undefined,
     lastPresence: Date,
     totalPresence: number,
     photo: string,
@@ -26,7 +26,7 @@ export class UserModel {
     this.name = name;
     this.email = email;
     this.madeCane = madeCane;
-    this.madeCaneDate = madeCaneDate;
+    this.madeCaneYear = madeCaneYear;
     this.lastPresence = lastPresence;
     this.totalPresence = totalPresence;
     this.photo = photo;
@@ -41,7 +41,7 @@ export class UserModel {
       json.name,
       json.email,
       json.madeCane,
-      json.madeCaneDate,
+      json.madeCaneYear,
       lastPresence,
       json.totalPresence,
       json.photo,
@@ -57,6 +57,6 @@ export interface IDataAuthUser {
   password: string;
   confirmPassword: string;
   madeCane: boolean;
-  madeCaneDate?: number;
+  madeCaneYear?: number;
   photo: string
 }

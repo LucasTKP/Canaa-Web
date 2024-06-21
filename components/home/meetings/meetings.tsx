@@ -16,12 +16,13 @@ function Meetings() {
   }, []);
 
   return (
-    meetings && (
+
       <div className="flex flex-col mt-[70px] max-xl:mt-[45px] max-md:mt-[30px] bg-terciary/30 p-[15px] rounded-[4px] w-[600px] max-xl:w-[430px] max-lg:w-[360px] max-md:w-full">
-        <h2 className="font-poiretOne text-[40px] max-xl:[36px] max-lg:text-[34px] max-md:text-[32px] max-sm:text-[30px text-black">
+        <h2 className="font-poiretOne text-[40px] max-xl:[36px] max-lg:text-[34px] max-md:text-[32px]  text-black">
           Reuniões
         </h2>
-        {meetings.map((meeting) => {
+            {meetings ? 
+        meetings.map((meeting) => {
           const isPresenceConfirmeted = presences?.find(
             (presence) => presence.id_meeting === meeting.id
           );
@@ -50,10 +51,13 @@ function Meetings() {
               )}
             </div>
           );
-        })}
+        })
+      : 
+      <p className="text-[20px] py-[10px]">Nenhuma reunião cadastrada para o dia de hoje</p>
+      }
       </div>
     )
-  );
+
 }
 
 export default Meetings;

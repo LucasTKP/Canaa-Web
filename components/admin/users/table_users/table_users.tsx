@@ -2,7 +2,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "./header";
 import { TriangleDownIcon } from "@radix-ui/react-icons";
-import { filterUsers, onGetUsers, sortLastPresenceUsers } from "./table_users_controller";
+import {
+  filterUsers,
+  onGetUsers,
+  sortLastPresenceUsers,
+  sortPresencesUsers,
+} from "./table_users_controller";
 import {
   toFormattedDateDDMMYYYYToString,
   toFormattedDateToString,
@@ -10,9 +15,11 @@ import {
 import DialogEditUser from "../dialog_edit_user/dialog_edit_user";
 import Footer from "./footer";
 import { UserModel } from "@/models/user";
+import Image from "next/image";
 
 interface typeFilters {
-  date: "asc" | "desc";
+  lastPresence: "asc" | "desc";
+  presences: "asc" | "desc";
 }
 
 function TableUsers() {
@@ -20,7 +27,8 @@ function TableUsers() {
   const [userSelect, setUserSelect] = useState<UserModel | null>(null);
   const [textSearch, setTextSearch] = useState<string>("");
   const [filters, setFilters] = useState<typeFilters>({
-    date: "asc",
+    lastPresence: "asc",
+    presences: "asc",
   });
 
   const [pagination, setPagination] = useState({
@@ -30,12 +38,23 @@ function TableUsers() {
   });
 
   useEffect(() => {
-    onGetUsers({ setUsers:setUsers });
+    onGetUsers({ setUsers: setUsers });
   }, []);
 
-  function handleFilterDate() {
-    setFilters({ date: filters.date == "asc" ? "desc" : "asc" });
-    sortLastPresenceUsers({ users, action: filters.date });
+  function handleFilterLastPresence() {
+    setFilters({
+      presences: "asc",
+      lastPresence: filters.lastPresence == "asc" ? "desc" : "asc",
+    });
+    sortLastPresenceUsers({ users, action: filters.lastPresence });
+  }
+
+  function handlePresences() {
+    setFilters({
+      lastPresence: "asc",
+      presences: filters.presences == "asc" ? "desc" : "asc",
+    });
+    sortPresencesUsers({ users, action: filters.presences });
   }
 
   const [width, setWidth] = useState(
@@ -49,7 +68,7 @@ function TableUsers() {
   window.addEventListener("resize", handleResize);
 
   return (
-    <div className="max-w-[800px] w-full min-h-[400px] max-xsm:min-h-[365px] border-terciary border-[1px] rounded-[10px] flex flex-col flex-1">
+    <div className="max-w-[800px] w-full min-h-[515px] max-sm:min-h-[480px] border-terciary border-[1px] rounded-[10px] flex flex-col flex-1">
       <Header users={users} setTextSearch={setTextSearch} />
       {users.length == 0 ? (
         <div className="w-full h-[400px] flex items-center justify-center">
@@ -57,16 +76,29 @@ function TableUsers() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-[60%_40%] gap-[1%] px-[15px] border-y-[1px] border-terciary bg-terciary/20 items-center text-[17px] max-xsm:text-[16px] font-[600] py-[5px] ">
-            <p>Tema</p>
+          <div className="grid grid-cols-[40px_1fr_100px_190px] max-sm:grid-cols-[35px_1fr_100px_100px] gap-[10px] max-xsm:gap-[5px] px-[10px] border-y-[1px] border-terciary bg-terciary/20 items-center text-[17px] max-xsm:text-[16px] font-[600] py-[5px] ">
+            <p className="col-start-2">Nome</p>
+
             <button
-              onClick={() => handleFilterDate()}
+              onClick={() => handlePresences()}
               className="flex items-center justify-center"
             >
-              <p>Data</p>
+              <p>Prenseças</p>
               <TriangleDownIcon
                 className={`${
-                  filters.date == "asc" ? "" : "rotate-180"
+                  filters.presences == "asc" ? "" : "rotate-180"
+                } duration-200`}
+              />
+            </button>
+
+            <button
+              onClick={() => handleFilterLastPresence()}
+              className="flex items-center justify-center"
+            >
+              <p>Última</p>
+              <TriangleDownIcon
+                className={`${
+                  filters.lastPresence == "asc" ? "" : "rotate-180"
                 } duration-200`}
               />
             </button>
@@ -86,11 +118,22 @@ function TableUsers() {
                   <div
                     onClick={() => setUserSelect(user)}
                     key={user.id}
-                    className="grid grid-cols-[60%_40%] gap-[1%] px-[15px] py-[3px] border-b-[1px] border-terciary bg-background hover:brightness-90 cursor-pointer max-xsm:text-[15px] "
+                    className="grid grid-cols-[40px_1fr_100px_190px] max-sm:grid-cols-[35px_1fr_100px_100px] gap-[10px] max-xsm:gap-[5px] px-[10px] py-[3px] border-b-[1px] border-terciary bg-background hover:brightness-90 cursor-pointer max-xsm:text-[15px] items-center"
                   >
+                    <Image
+                      alt="perfil"
+                      src={user.photo}
+                      width={40}
+                      height={40}
+                      className="rounded-full border-[1px] border-black aspect-square max-sm:w-[35px]"
+                    />
+
                     <p className="truncate">{user.name}</p>
+
+                    <p className="text-center">{user.totalPresence}</p>
+
                     <p className="text-center">
-                      {width > 475
+                      {width > 640
                         ? toFormattedDateToString(user.lastPresence)
                         : toFormattedDateDDMMYYYYToString(user.lastPresence)}
                     </p>
@@ -101,7 +144,7 @@ function TableUsers() {
             })()
           ) : (
             <p className="w-full h-[200px] flex items-center justify-center">
-              Nenhuma reunião foi encontrada com este nome
+              Nenhum usuário foi encontrado com este nome
             </p>
           )}
           <Footer
@@ -112,13 +155,13 @@ function TableUsers() {
           />
         </>
       )}
-      {/* {userSelect && (
+      {userSelect && (
         <DialogEditUser
           setUsers={setUsers}
           userSelect={userSelect}
           setUserSelect={setUserSelect}
         />
-      )} */}
+      )}
     </div>
   );
 }

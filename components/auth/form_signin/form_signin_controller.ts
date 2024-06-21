@@ -1,5 +1,7 @@
+import { auth } from "@/lib/firebase_config";
 import { signInUser } from "@/repositories/userAuth";
 import { formatterError } from "@/utils/functions/formatter_error";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
 
@@ -40,4 +42,14 @@ function verifyDataUser({ email, password }: Record<string, string>) {
   }
   toast.error("Faltou informação para efetuar seu cadastro!");
   return false;
+}
+
+export function sendPasswordReset(email: string) {
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      toast.success("Email enviado para redefinir sua senha");
+    })
+    .catch((error) => {
+      formatterError(error);
+    });
 }

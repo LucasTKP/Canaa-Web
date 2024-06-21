@@ -25,7 +25,7 @@ function DialogRegisterMeeting({ setMeetings }: DialogRegisterMeetingProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button className="bg-primary text-background px-[20px] max-xsm:px-[10px] py-[3px] max-xsm:py-[1px] font-[500] max-xsm:text-[14px] rounded-[5px] hover:brightness-95 duration-200">
+        <button className="bg-primary text-background px-[20px] max-xsm:px-[10px] py-[3px] max-xsm:py-[1px] font-[500] max-xsm:text-[13px] rounded-[5px] hover:brightness-95 duration-200">
           Cadastrar
         </button>
       </Dialog.Trigger>

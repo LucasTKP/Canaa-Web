@@ -45,10 +45,10 @@ function formatDataUser(e: FormEvent<HTMLFormElement>) {
     photo:
       "https://firebasestorage.googleapis.com/v0/b/canaa-afb9f.appspot.com/o/imageProfile%2Fjesus.jpg?alt=media&token=2c88b915-676a-46d4-8b5a-887c11ea714c",
   };
-  if (parseInt(formData.get("madeCaneDate") as string) as number) {
+  if (parseInt(formData.get("madeCaneYear") as string) as number) {
     dataUser = {
       ...dataUser,
-      madeCaneDate: parseInt(formData.get("madeCaneDate") as string) as number,
+      madeCaneYear: parseInt(formData.get("madeCaneYear") as string) as number,
     };
   }
 
@@ -62,7 +62,7 @@ function verifyDataUser(dataAuthUser: IDataAuthUser): boolean {
     dataAuthUser.password.length >= 6 &&
     dataAuthUser.confirmPassword.length >= 6
   ) {
-    if (dataAuthUser.madeCane && dataAuthUser.madeCaneDate) return true;
+    if (dataAuthUser.madeCane && dataAuthUser.madeCaneYear) return true;
     if (!dataAuthUser.madeCane) return true;
   }
   toast.error("Faltou informação para efetuar seu cadastro!");

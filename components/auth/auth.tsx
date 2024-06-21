@@ -20,6 +20,7 @@ export default function Auth() {
         alt="Logo"
         width={200}
         height={200}
+        priority
       />
 
       <div className="flex-auto flex justify-center items-center">
