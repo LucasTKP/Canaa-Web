@@ -3,7 +3,6 @@ import Meetings from "./meetings/meetings";
 import Header from "./header/header";
 import Image from "next/image";
 import DataUser from "./dataUser/dataUser";
-import { toast } from "react-toastify";
 
 function Home() {
 
@@ -11,7 +10,6 @@ function Home() {
   return (
     <div className="flex flex-col  w-full px-[10%] max-lg:px-[20px] max-sm:px-[10px]">
       <Header />
-      <button onClick={() => {toast.success("Funcionalidade em construção adihlj asdj")}}></button>
 
       <Image
         className="w-full aspect-[40/9] max-lg:aspect-[30/9] max-sm:aspect-[25/9] max-xsm:aspect-[20/9] bg-primary mt-[15px] rounded-[15px] items-center p-[5px]"

@@ -4,6 +4,7 @@ import Meetings from "../meetings/meetings";
 import { UserContext } from "@/context/userContext";
 import Image from "next/image";
 import { toFormattedDateToString } from "@/utils/functions/formmatter_date";
+import { toast } from "react-toastify";
 
 function DataUser() {
   const { user } = useContext(UserContext);
@@ -11,6 +12,13 @@ function DataUser() {
   return (
     <div className="w-fit">
       <div className="relative">
+        <button
+          onClick={() => {
+            toast.success("Funcionalidade em construção adihlj asdj");
+          }}
+        >
+          aaaaa
+        </button>
         <Image
           src={user?.photo!}
           alt="Foto de perfil"
