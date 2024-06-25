@@ -7,9 +7,16 @@ interface HeaderProps {
   meetings: MeetingModel[];
   setTextSearch: React.Dispatch<React.SetStateAction<string>>;
   setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[]>>;
+  setPagination: React.Dispatch<
+    React.SetStateAction<{
+      page: number;
+      maxPage: number;
+      minPage: number;
+    }>
+  >;
 }
 
-function Header({ meetings, setTextSearch, setMeetings }: HeaderProps) {
+function Header({ meetings, setTextSearch, setMeetings, setPagination }: HeaderProps) {
   return (
     <div className="flex p-[15px] max-xsm:p-[10px] justify-between items-center">
       <p className="text-[18px] max-xsm:text-[14px] text-terciary/80">
@@ -21,7 +28,14 @@ function Header({ meetings, setTextSearch, setMeetings }: HeaderProps) {
           type="text"
           placeholder="Digite o tema da reunião"
           className="rounded-l-[5px] bg-transparent outline-none w-full"
-          onChange={(e) => setTextSearch(e.target.value)}
+          onChange={(e) => {
+            setTextSearch(e.target.value),
+              setPagination({
+                page: 1,
+                maxPage: 8,
+                minPage: 1,
+              });
+          }}
         />
         <MagnifyingGlassIcon width={20} height={20} />
       </label>

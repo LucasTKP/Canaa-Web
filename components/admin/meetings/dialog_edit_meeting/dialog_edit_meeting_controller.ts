@@ -27,7 +27,7 @@ export async function onEditMeeting({
   if (verifyDataMeeting(dataMeeting)) {
     try {
       await editMeeting(dataMeeting);
-      toast.success("Palestra editada com sucesso.");
+      toast.success("Reunião editada com sucesso.");
       await onGetMeetings({ setMeetings });
       setMeetingSelect(null);
     } catch (error) {

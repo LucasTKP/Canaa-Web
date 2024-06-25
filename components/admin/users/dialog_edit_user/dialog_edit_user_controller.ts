@@ -28,7 +28,7 @@ export async function onEditUser({
   if (verifyDataUser(dataUser)) {
     try {
       await updateUser(dataUser);
-      toast.success("Palestra editada com sucesso.");
+      toast.success("Usuário editado com sucesso.");
       await onGetUsers({ setUsers });
       setUserSelect(null);
     } catch (error) {

@@ -24,7 +24,7 @@ export function filterUsers({
   users,
   textSearch,
 }: FilterUsersProps): UserModel[] {
-  const usersFiltered = users.filter((user) => user.name.includes(textSearch));
+  const usersFiltered = users.filter((user) => user.name.toLocaleLowerCase().includes(textSearch.toLocaleLowerCase()));
   return usersFiltered;
 }
 interface sortDateUsersProps {

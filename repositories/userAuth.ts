@@ -5,9 +5,7 @@ import {
   User,
   signInWithEmailAndPassword,
   browserSessionPersistence,
-  onAuthStateChanged,
 } from "firebase/auth";
-import { use } from "react";
 
 interface iCreateAuthUser {
   email: string;

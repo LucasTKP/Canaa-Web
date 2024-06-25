@@ -29,7 +29,10 @@ export async function onConfirmPresence({
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
   const password = formData.get("password") as string;
-  if (password.toLocaleLowerCase() === meeting.password.toLocaleLowerCase()) {
+  if (
+    password.toLocaleLowerCase().trim() ===
+    meeting.password.toLocaleLowerCase().trim()
+  ) {
     setIsLoading(true);
     const dataPresence: Omit<PresenceModel, "id"> = {
       id_meeting: meeting.id,

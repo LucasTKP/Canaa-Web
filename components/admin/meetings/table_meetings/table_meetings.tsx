@@ -59,6 +59,7 @@ function TableMeetings() {
         meetings={meetings}
         setTextSearch={setTextSearch}
         setMeetings={setMeetings}
+        setPagination={setPagination}
       />
       {meetings.length == 0 ? (
         <div className="w-full h-[400px] flex items-center justify-center">

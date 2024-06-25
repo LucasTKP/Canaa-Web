@@ -69,7 +69,7 @@ function TableUsers() {
 
   return (
     <div className="max-w-[800px] w-full min-h-[515px] max-sm:min-h-[480px] border-terciary border-[1px] rounded-[10px] flex flex-col flex-1">
-      <Header users={users} setTextSearch={setTextSearch} />
+      <Header users={users} setTextSearch={setTextSearch} setPagination={setPagination} />
       {users.length == 0 ? (
         <div className="w-full h-[400px] flex items-center justify-center">
           <p>Nenhum usuário foi encontrado</p>

@@ -77,7 +77,7 @@ function DialogEditUser({
           className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-10"
           onClick={() => setUserSelect(null)}
         />
-        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-10">
+        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%]  w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-10">
           <Dialog.Title className="text-[20px] font-medium">
             Edite este usuário
           </Dialog.Title>
@@ -108,19 +108,15 @@ function DialogEditUser({
               />
             </label>
 
-            <label className="w-full" htmlFor="email">
+            <div className="w-full">
               <p className="text-[15px] font-[500]">Email:</p>
-              <input
-                className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] placeholder:text-black/60"
-                name="email"
-                placeholder="Escreva o email do usuário"
-                required
-                defaultValue={userSelect.email}
-              />
-            </label>
+              <div className="w-full p-[10px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]">
+                <p>{userSelect.email}</p>
+              </div>
+            </div>
 
-            <div className="flex items-center justify-between w-full">
-              <label htmlFor="totalPresence w-[48%]">
+            <div className="flex items-center justify-between w-full max-xsm:flex-col gap-y-[10px]">
+              <label htmlFor="totalPresence" className="w-[48%] max-xsm:w-full">
                 <p className="text-[15px] font-[500]">Total de Presença:</p>
                 <input
                   className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
@@ -130,7 +126,7 @@ function DialogEditUser({
                   defaultValue={userSelect.totalPresence}
                 />
               </label>
-              <label htmlFor="lastPresence" className="w-[48%]">
+              <label htmlFor="lastPresence" className="w-[48%] max-xsm:w-full">
                 <p className="text-[15px] font-[500]">Última presença:</p>
                 <input
                   className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
@@ -144,9 +140,11 @@ function DialogEditUser({
               </label>
             </div>
 
-            <div className="flex items-center justify-between w-full">
-              <label className="flex flex-col w-[48%]">
-                <p className="text-[18px]"> já fez o acampamento?</p>
+            <div className="flex items-center justify-between w-full max-xsm:flex-col gap-y-[10px]">
+              <label className="flex flex-col w-[48%] max-xsm:w-full">
+                <p className="text-[18px] max-sm:text-[16px]">
+                  já fez o acampamento?
+                </p>
                 <Select
                   options={options}
                   required={true}
@@ -160,8 +158,8 @@ function DialogEditUser({
               </label>
 
               {madeCane && (
-                <label className="flex flex-col w-[48%]">
-                  <p className="text-[16px]">Em que ano?</p>
+                <label className="flex flex-col w-[48%] max-xsm:w-full">
+                  <p className="text-[18px] max-sm:text-[16px]">Em que ano?</p>
                   <Select
                     options={options2}
                     required={true}

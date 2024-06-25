@@ -25,7 +25,7 @@ export async function onCreateMeeting({
   if (verifyDataMeeting(dataMeeting)) {
     try {
       await createMeeting(dataMeeting);
-      toast.success("Palestra cadastrada com sucesso.");
+      toast.success("Reunião cadastrada com sucesso.");
       await onGetMeetings({setMeetings});
       closeDialog();
     } catch (error) {
@@ -50,7 +50,7 @@ function formatterDataMeeting(
     theme: formData.get("theme") as string,
     description: formData.get("description") as string,
     date: date,
-    password: password.toLocaleLowerCase(),
+    password: password.toLocaleLowerCase().trim(),
     isVisible: false,
   };
 

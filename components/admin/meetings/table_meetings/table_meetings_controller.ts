@@ -8,13 +8,12 @@ interface onGetMeetingsProps {
 export async function onGetMeetings({ setMeetings }: onGetMeetingsProps) {
   try {
     const meetings = await getAllMeetings();
-    setMeetings(sortDateMeetings({meetings, action: "desc"}));
+    setMeetings(sortDateMeetings({ meetings, action: "desc" }));
   } catch (error) {
     console.log(error);
     formatterError(error);
   }
 }
-
 
 interface FilterMeetingsProps {
   meetings: MeetingModel[];
@@ -26,7 +25,7 @@ export function filterMeetings({
   textSearch,
 }: FilterMeetingsProps): MeetingModel[] {
   const meetingsFiltered = meetings.filter((meeting) =>
-    meeting.theme.includes(textSearch)
+    meeting.theme.toLocaleLowerCase().includes(textSearch.toLocaleLowerCase())
   );
   return meetingsFiltered;
 }
@@ -35,9 +34,11 @@ interface sortDateMeetingsProps {
   action: "asc" | "desc";
 }
 
-
-export function sortDateMeetings({meetings, action} : sortDateMeetingsProps): MeetingModel[] {
-  if(action === "asc"){
+export function sortDateMeetings({
+  meetings,
+  action,
+}: sortDateMeetingsProps): MeetingModel[] {
+  if (action === "asc") {
     return meetings.sort((a, b) => a.date.getTime() - b.date.getTime());
   } else {
     return meetings.sort((a, b) => b.date.getTime() - a.date.getTime());
