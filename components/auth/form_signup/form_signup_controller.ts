@@ -42,7 +42,9 @@ function formatDataUser(e: FormEvent<HTMLFormElement>) {
     password: formData.get("password") as string,
     confirmPassword: formData.get("confirmPassword") as string,
     madeCane: (formData.get("madeCane") as string) == "true" ? true : false,
-    photo:
+    madeCaneYear: null,
+    namePhoto: "jesus.jpg",
+    photoUrl:
       "https://firebasestorage.googleapis.com/v0/b/canaa-afb9f.appspot.com/o/imageProfile%2Fjesus.jpg?alt=media&token=2c88b915-676a-46d4-8b5a-887c11ea714c",
   };
   if (parseInt(formData.get("madeCaneYear") as string) as number) {
