@@ -71,9 +71,6 @@ async function onUpdateTotalPresenceAndLastPresence({
   let newUser = { ...user };
   newUser.totalPresence = user.totalPresence + 1;
   newUser.lastPresence = lastPresence;
-  if (!newUser.madeCaneYear) {
-    delete newUser.madeCaneYear;
-  }
   await updateUser(newUser);
   return newUser;
 }
