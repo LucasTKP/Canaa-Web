@@ -1,9 +1,19 @@
 "use client";
-import React, { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useRef,
+  useState,
+} from "react";
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { CameraIcon } from "@radix-ui/react-icons";
-import { SaveImageProfile, clearFileInput, handleFileChange } from "./edit_image_profile_controller";
+import {
+  SaveImageProfile,
+  clearFileInput,
+  handleFileChange,
+} from "./edit_image_profile_controller";
 import { UserModel } from "@/models/user";
 
 interface EditImageProfileProps {
@@ -11,9 +21,7 @@ interface EditImageProfileProps {
   setUser: Dispatch<SetStateAction<UserModel | undefined>>;
 }
 
-function EditImageProfile({
-  user,
-  setUser}: EditImageProfileProps) {
+function EditImageProfile({ user, setUser }: EditImageProfileProps) {
   const cropperRef = useRef<ReactCropperElement>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -25,8 +33,10 @@ function EditImageProfile({
         <input
           ref={inputFileRef}
           type="file"
-          onChange={(e) => handleFileChange({ event: e, setFile })}
-          accept="image/*"
+          onChange={(e) =>
+            handleFileChange({ event: e, setFile, inputFileRef })
+          }
+          accept="image/png, image/jpeg, image/jpg"
           className="hidden"
         />
         <div className="rounded-full p-[7px]">

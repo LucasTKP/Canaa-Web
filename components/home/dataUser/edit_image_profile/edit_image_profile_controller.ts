@@ -4,6 +4,7 @@ import { deleteFile, uploadImageProfile } from "@/repositories/userStorage";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { ReactCropperElement } from "react-cropper";
 import { toast } from "react-toastify";
+import heic2any from "heic2any";
 
 interface SaveImageProfile {
   cropperRef: React.RefObject<ReactCropperElement>;
@@ -63,32 +64,56 @@ export async function SaveImageProfile({
   }
 }
 
-  const getBlobFromCanvas = (cropper: Cropper): Promise<Blob | null> => {
-    return new Promise((resolve) => {
-      cropper.getCroppedCanvas().toBlob((blob) => {
-        resolve(blob);
-      });
+const getBlobFromCanvas = (cropper: Cropper): Promise<Blob | null> => {
+  return new Promise((resolve) => {
+    cropper.getCroppedCanvas().toBlob((blob) => {
+      resolve(blob);
     });
-  };
+  });
+};
 
 interface handleFileChange {
   event: ChangeEvent<HTMLInputElement>;
   setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  inputFileRef: React.RefObject<HTMLInputElement>;
 }
 
-export function handleFileChange({ event, setFile }: handleFileChange) {
+export async function handleFileChange({
+  event,
+  setFile,
+  inputFileRef,
+}: handleFileChange) {
   if (event.target.files?.length) {
-    const file = event.target.files[0];
+    let file = event.target.files[0];
+
     if (file.size > 30000000) {
       toast.error("A imagem que você selecionou é muito grande");
       return;
     }
 
-    if (!file.type.includes("image")) {
-      toast.error("O arquivo que você selecionou não é uma imagem");
-      return;
+    if (file.type === "image/heic" || file.name.includes(".heic")) {
+      const newImage = await heic2any({
+        blob: file,
+        toType: "image/jpeg",
+        quality: 1,
+      });
+
+      file = blobToFile({ theBlob: newImage, fileName: file });
     }
-    setFile(file);
+
+    try {
+      if (!file.type.includes("image")) {
+        return toast.error(
+          "O arquivo que você selecionou não é uma imagem png/jpg/jpeg"
+        );
+      }
+      setFile(file);
+    } catch (error) {
+      toast.error("Erro ao converter a imagem HEIC");
+      console.error(error);
+    } finally {
+      clearFileInput(inputFileRef);
+    }
   }
 }
 
@@ -112,4 +137,11 @@ async function onUpdateUser({ user, namePhoto, photoUrl }: OnUpdateUserProps) {
     photoUrl: photoUrl,
   };
   await updateUser(newUser);
+}
+
+function blobToFile({ theBlob, fileName }: { theBlob: any; fileName: File }) {
+  return new File([theBlob], fileName.name, {
+    lastModified: new Date().getTime(),
+    type: theBlob.type,
+  });
 }
