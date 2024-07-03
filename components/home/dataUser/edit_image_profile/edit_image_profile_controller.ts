@@ -104,7 +104,7 @@ export async function handleFileChange({
     try {
       if (!file.type.includes("image")) {
         return toast.error(
-          "O arquivo que você selecionou não é uma imagem png/jpg/jpeg"
+          "O arquivo que você selecionou não é uma imagem png/jpg/jpeg/heic"
         );
       }
       setFile(file);

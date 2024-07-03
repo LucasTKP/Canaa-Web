@@ -36,7 +36,7 @@ function EditImageProfile({ user, setUser }: EditImageProfileProps) {
           onChange={(e) =>
             handleFileChange({ event: e, setFile, inputFileRef })
           }
-          accept="image/png, image/jpeg, image/jpg"
+          accept="image/*"
           className="hidden"
         />
         <div className="rounded-full p-[7px]">
