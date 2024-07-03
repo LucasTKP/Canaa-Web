@@ -43,7 +43,7 @@ function EditImageProfile({
             }}
             className="bg-black/80 w-full h-full left-0 top-0 fixed"
           />
-          <div className="flex flex-col w-full max-w-[400px]">
+          <div className="flex flex-col w-full max-w-[400px] max-xsm:max-w-[90%]">
             <button
               onClick={() =>
                 SaveImageProfile({
