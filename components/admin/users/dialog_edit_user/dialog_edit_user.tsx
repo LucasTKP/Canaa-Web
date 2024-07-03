@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { onEditUser } from "./dialog_edit_user_controller";
 import { toFormattedDateYYYYMMDDToString } from "@/utils/functions/formmatter_date";
 import Select, { StylesConfig } from "react-select";
 import { UserModel } from "@/models/user";
+import Image from "next/image";
+import EditImageProfile from "./edit_image_profile/edit_image_profile";
 
 interface DialogEditUserModelProps {
   setUsers: React.Dispatch<React.SetStateAction<UserModel[]>>;
@@ -77,13 +79,24 @@ function DialogEditUser({
           className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-10"
           onClick={() => setUserSelect(null)}
         />
-        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%]  w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-10">
+        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%]  w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-10 flex flex-col">
           <Dialog.Title className="text-[20px] font-medium">
             Edite este usuário
           </Dialog.Title>
           <Dialog.Description className="mt-[10px] mb-5 text-[15px]">
             Modifique as informações do usuário nos campos abaixo
           </Dialog.Description>
+          <div className="w-[120px] aspect-square rounded-full self-center border-[1px] border-black relative">
+            <Image
+              alt="Imagem do usuário"
+              src={userSelect.photoUrl}
+              width={1000}
+              height={1000}
+              className="rounded-full min-w-full aspect-square"
+            />
+            <EditImageProfile user={userSelect} setUsers={setUsers} setUserSelect={setUserSelect} />
+          </div>
+
           <form
             onSubmit={(e) =>
               onEditUser({
@@ -94,7 +107,7 @@ function DialogEditUser({
                 setUsers,
               })
             }
-            className="flex flex-col items-start gap-y-[10px]"
+            className="flex flex-col items-start gap-y-[8px]"
           >
             <label className="w-full" htmlFor="name">
               <p className="text-[15px] font-[500]">Nome:</p>

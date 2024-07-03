@@ -1,6 +1,5 @@
 import { UserModel } from "@/models/user";
 import { formatterError } from "@/utils/functions/formatter_error";
-import { User } from "firebase/auth";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
 import { onGetUsers } from "../table_users/table_users_controller";
@@ -23,20 +22,20 @@ export async function onEditUser({
 }: OnEditUser) {
   e.preventDefault();
   setIsLoading(true);
-
-  const dataUser = formatterDataUser({ user, e });
-  if (verifyDataUser(dataUser)) {
-    try {
+  try {
+    const dataUser = await formatterDataUser({ user, e });
+    if (verifyDataUser(dataUser)) {
       await updateUser(dataUser);
       toast.success("Usuário editado com sucesso.");
       await onGetUsers({ setUsers });
       setUserSelect(null);
-    } catch (error) {
-      console.log(error);
-      formatterError(error);
     }
+  } catch (error) {
+    console.log(error);
+    formatterError(error);
+  } finally {
+    setIsLoading(false);
   }
-  setIsLoading(false);
 }
 
 interface formatterDataUserProps {
@@ -44,28 +43,31 @@ interface formatterDataUserProps {
   e: FormEvent<HTMLFormElement>;
 }
 
-function formatterDataUser({ user, e }: formatterDataUserProps): UserModel {
+async function formatterDataUser({
+  user,
+  e,
+}: formatterDataUserProps): Promise<UserModel> {
   const formData = new FormData(e.currentTarget);
   const lastPresenceString = formData.get("lastPresence") as string;
   const localDateString = `${lastPresenceString}T00:00:00`;
   const lastPresence = new Date(localDateString);
 
   const madeCaneYear =
-    formData.get("madeCaneYear") as string != null
+    (formData.get("madeCaneYear") as string) != null
       ? parseInt(formData.get("madeCaneYear") as string)
       : null;
 
   var dataUser: UserModel = {
     id: user.id,
     name: formData.get("name") as string,
-    email: formData.get("email") as string,
+    email: user.email,
     madeCane: (formData.get("madeCane") as string) == "true" ? true : false,
     lastPresence: lastPresence,
     totalPresence: parseInt(formData.get("totalPresence") as string),
-    photo: user.photo,
+    namePhoto: user.namePhoto,
+    photoUrl: user.photoUrl,
+    madeCaneYear: null,
   };
-
-
 
   madeCaneYear != null && (dataUser.madeCaneYear = madeCaneYear);
 
@@ -80,7 +82,8 @@ function verifyDataUser(dataUser: UserModel): boolean {
     dataUser.madeCane != null &&
     dataUser.lastPresence != null &&
     dataUser.totalPresence != null &&
-    dataUser.photo
+    dataUser.namePhoto &&
+    dataUser.photoUrl
   ) {
     return true;
   }

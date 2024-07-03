@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -15,13 +15,18 @@
     "firebase": "^10.12.0",
     "next": "14.2.3",
     "react": "^18",
+    "react-avatar-editor": "^13.0.2",
+    "react-cropper": "^2.3.3",
     "react-dom": "^18",
+    "react-easy-crop": "^5.0.7",
+    "react-image-crop": "^11.0.5",
     "react-select": "^5.8.0",
     "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-avatar-editor": "^13.0.2",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",

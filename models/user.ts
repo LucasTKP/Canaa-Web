@@ -5,10 +5,11 @@ export class UserModel {
   name: string;
   email: string;
   madeCane: boolean;
-  madeCaneYear?: number;
+  madeCaneYear: number | null;
   lastPresence: Date;
   totalPresence: number;
-  photo: string;
+  namePhoto: string;
+  photoUrl: string;
   isAdmin?: boolean;
 
   constructor(
@@ -16,10 +17,11 @@ export class UserModel {
     name: string,
     email: string,
     madeCane: boolean,
-    madeCaneYear: number | undefined,
+    madeCaneYear: number | null,
     lastPresence: Date,
     totalPresence: number,
-    photo: string,
+    namePhoto: string,
+    photoUrl: string,
     isAdmin: boolean
   ) {
     this.id = id;
@@ -29,7 +31,8 @@ export class UserModel {
     this.madeCaneYear = madeCaneYear;
     this.lastPresence = lastPresence;
     this.totalPresence = totalPresence;
-    this.photo = photo;
+    this.namePhoto = namePhoto;
+    this.photoUrl = photoUrl;
     this.isAdmin = isAdmin;
   }
 
@@ -44,7 +47,8 @@ export class UserModel {
       json.madeCaneYear,
       lastPresence,
       json.totalPresence,
-      json.photo,
+      json.namePhoto,
+      json.photoUrl,
       json.isAdmin ? true : false
     );
   }
@@ -57,6 +61,7 @@ export interface IDataAuthUser {
   password: string;
   confirmPassword: string;
   madeCane: boolean;
-  madeCaneYear?: number;
-  photo: string
+  madeCaneYear: number | null;
+  namePhoto: string
+  photoUrl: string
 }

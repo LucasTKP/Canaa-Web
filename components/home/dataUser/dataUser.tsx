@@ -4,23 +4,26 @@ import Meetings from "../meetings/meetings";
 import { UserContext } from "@/context/userContext";
 import Image from "next/image";
 import { toFormattedDateToString } from "@/utils/functions/formmatter_date";
+import EditImageProfile from "./edit_image_profile/edit_image_profile";
 
 function DataUser() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   return (
     <div className="w-fit">
-      <div className="relative">
+      <div className="relative z-10">
         <Image
-          src={user?.photo!}
+          src={user?.photoUrl!}
           alt="Foto de perfil"
-          className="absolute top-1/2 left-1/2 transform xsm:-translate-x-1/2  -translate-y-1/2 max-xsm:left-[15px] max-xl:w-[150px] max-md:w-[135px] max-sm:w-[120px] max-xsm:w-[110px] aspect-square rounded-full border-[2px] border-black"
+          className="absolute top-1/2 left-1/2 transform xsm:-translate-x-1/2  -translate-y-1/2 max-xsm:left-[15px] max-xl:w-[150px] max-md:w-[135px] max-sm:w-[120px] max-xsm:w-[110px] aspect-square rounded-full border-[2px] border-black bg-background"
           width={200}
           height={200}
         />
       </div>
       <div className="mt-[70px] max-xl:mt-[45px] max-md:mt-[35px] max-xsm:mt-[25px]">
-        <div className="flex flex-col bg-terciary/30 rounded-[10px] p-[15px] text-[20px] max-xl:text-[18px]">
+        <div className="flex flex-col bg-terciary/30 rounded-[10px] p-[15px] text-[20px] max-xl:text-[18px] relative">
+          <EditImageProfile user={user!} setUser={setUser} />
+
           <p className="mt-[15px] truncate">
             <span className="font-[500] w-full">Nome:</span> {user?.name}
           </p>

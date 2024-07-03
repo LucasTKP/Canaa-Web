@@ -68,8 +68,12 @@ function TableUsers() {
   window.addEventListener("resize", handleResize);
 
   return (
-    <div className="max-w-[800px] w-full min-h-[515px] max-sm:min-h-[480px] border-terciary border-[1px] rounded-[10px] flex flex-col flex-1">
-      <Header users={users} setTextSearch={setTextSearch} setPagination={setPagination} />
+    <div className="max-w-[800px] w-full min-h-[515px] max-sm:min-h-[480px] max-xsm:min-h-[460px] border-terciary border-[1px] rounded-[10px] flex flex-col flex-1">
+      <Header
+        users={users}
+        setTextSearch={setTextSearch}
+        setPagination={setPagination}
+      />
       {users.length == 0 ? (
         <div className="w-full h-[400px] flex items-center justify-center">
           <p>Nenhum usuário foi encontrado</p>
@@ -122,7 +126,7 @@ function TableUsers() {
                   >
                     <Image
                       alt="perfil"
-                      src={user.photo}
+                      src={user.photoUrl}
                       width={40}
                       height={40}
                       className="rounded-full border-[1px] border-black aspect-square max-sm:w-[35px]"

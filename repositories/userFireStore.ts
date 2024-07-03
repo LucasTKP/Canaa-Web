@@ -1,6 +1,17 @@
-import { db } from "@/lib/firebase_config";
+import { db, storage } from "@/lib/firebase_config";
 import { IDataAuthUser, UserModel } from "@/models/user";
-import { setDoc, doc, getDoc, updateDoc, collection, getDocs, orderBy } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  getDocs,
+  orderBy,
+  deleteField,
+} from "firebase/firestore";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import path from "path";
 
 interface IPropsCreateUserFireStore {
   dataAuthUser: IDataAuthUser;
@@ -17,7 +28,9 @@ export async function createUserFireStore({
     madeCane: dataAuthUser.madeCane,
     lastPresence: new Date(),
     totalPresence: 0,
-    photo: dataAuthUser.photo,
+    namePhoto: dataAuthUser.namePhoto,
+    photoUrl: dataAuthUser.photoUrl,
+    madeCaneYear: null,
   };
   if (dataAuthUser.madeCaneYear) {
     dataUser.madeCaneYear = dataAuthUser.madeCaneYear;
@@ -26,7 +39,6 @@ export async function createUserFireStore({
   await setDoc(doc(db, `users`, idAuthUser), dataUser);
 }
 
-
 export async function getUser(idUser: string): Promise<UserModel | null> {
   const docSnap = await getDoc(doc(db, "users", idUser));
   if (docSnap.exists()) {
@@ -34,7 +46,6 @@ export async function getUser(idUser: string): Promise<UserModel | null> {
   }
   return null;
 }
-
 
 export async function getAllUsers(): Promise<Array<UserModel>> {
   const querySnapshot = await getDocs(collection(db, "users"));
@@ -45,9 +56,10 @@ export async function getAllUsers(): Promise<Array<UserModel>> {
   return users;
 }
 
-
 export async function updateUser(data: UserModel) {
   await updateDoc(doc(db, "users", data.id), {
     ...data,
   });
 }
+
+
