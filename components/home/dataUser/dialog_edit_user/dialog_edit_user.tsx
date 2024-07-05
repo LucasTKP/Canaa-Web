@@ -3,25 +3,20 @@ import React, { useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { onEditUser } from "./dialog_edit_user_controller";
-import { toFormattedDateYYYYMMDDToString } from "@/utils/functions/formmatter_date";
+import {
+  toFormattedDateDDMMYYYYToString,
+  toFormattedDateYYYYMMDDToString,
+} from "@/utils/functions/formmatter_date";
 import Select, { StylesConfig } from "react-select";
-import { UserModel } from "@/models/user";
 import Image from "next/image";
 import EditImageProfile from "./edit_image_profile/edit_image_profile";
+import { UserContext } from "@/context/userContext";
 
-interface DialogEditUserModelProps {
-  setUsers: React.Dispatch<React.SetStateAction<UserModel[]>>;
-  userSelect: UserModel;
-  setUserSelect: React.Dispatch<React.SetStateAction<UserModel | null>>;
-}
-
-function DialogEditUser({
-  setUsers,
-  userSelect,
-  setUserSelect,
-}: DialogEditUserModelProps) {
+function DialogEditUser() {
+  const { user, setUser } = React.useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [madeCane, setMadeCane] = React.useState<boolean>(userSelect.madeCane);
+  const [madeCane, setMadeCane] = React.useState<boolean>(user!.madeCane);
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
   const customStyles: StylesConfig = {
     control: (provided) => ({
@@ -66,14 +61,22 @@ function DialogEditUser({
     setMadeCane(selectedOption.value);
   };
 
+  function closeDialog() {
+    if (cancelButtonRef.current) {
+      cancelButtonRef.current.click();
+    }
+  }
+
   return (
-    <Dialog.Root open={userSelect ? true : false}>
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <button className="w-fit self-end text-[16px] bg-primary text-background px-[20px] py-[3px] rounded-[5px] hover:brightness-95 duration-200">
+          Editar
+        </button>
+      </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay
-          className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-10"
-          onClick={() => setUserSelect(null)}
-        />
-        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%]  w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-10 flex flex-col">
+        <Dialog.Overlay className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-10" />
+        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%]  w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-background p-[20px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-10 flex flex-col">
           <Dialog.Title className="text-[20px] font-medium">
             Edite este usuário
           </Dialog.Title>
@@ -83,22 +86,22 @@ function DialogEditUser({
           <div className="w-[120px] aspect-square rounded-full self-center border-[1px] border-black relative">
             <Image
               alt="Imagem do usuário"
-              src={userSelect.photoUrl}
+              src={user!.photoUrl}
               width={1000}
               height={1000}
               className="rounded-full min-w-full aspect-square"
             />
-            <EditImageProfile user={userSelect} setUsers={setUsers} setUserSelect={setUserSelect} />
+            <EditImageProfile closeDialog={closeDialog} />
           </div>
 
           <form
             onSubmit={(e) =>
               onEditUser({
                 e,
-                user: userSelect,
+                user: user!,
                 setIsLoading,
-                setUserSelect,
-                setUsers,
+                setUser,
+                closeDialog,
               })
             }
             className="flex flex-col items-start gap-y-[8px]"
@@ -111,42 +114,9 @@ function DialogEditUser({
                 placeholder="Escreva o nome do usuário"
                 type="text"
                 required
-                defaultValue={userSelect.name}
+                defaultValue={user!.name}
               />
             </label>
-
-            <div className="w-full">
-              <p className="text-[15px] font-[500]">Email:</p>
-              <div className="w-full p-[10px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]">
-                <p>{userSelect.email}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between w-full max-xsm:flex-col gap-y-[10px]">
-              <label htmlFor="totalPresence" className="w-[48%] max-xsm:w-full">
-                <p className="text-[15px] font-[500]">Total de Presença:</p>
-                <input
-                  className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                  name="totalPresence"
-                  type="number"
-                  required
-                  defaultValue={userSelect.totalPresence}
-                />
-              </label>
-              <label htmlFor="lastPresence" className="w-[48%] max-xsm:w-full">
-                <p className="text-[15px] font-[500]">Última presença:</p>
-                <input
-                  className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                  name="lastPresence"
-                  type="date"
-                  required
-                  defaultValue={toFormattedDateYYYYMMDDToString(
-                    userSelect.lastPresence
-                  )}
-                />
-              </label>
-            </div>
-
             <div className="flex items-center justify-between w-full max-xsm:flex-col gap-y-[10px]">
               <label className="flex flex-col w-[48%] max-xsm:w-full">
                 <p className="text-[18px] max-sm:text-[16px]">
@@ -159,7 +129,7 @@ function DialogEditUser({
                   onChange={handleChange}
                   styles={customStyles}
                   defaultValue={options.find(
-                    (option) => option.value === userSelect.madeCane
+                    (option) => option.value === user!.madeCane
                   )}
                 />
               </label>
@@ -173,24 +143,39 @@ function DialogEditUser({
                     name="madeCaneYear"
                     styles={customStyles}
                     defaultValue={options2.find(
-                      (option) => option.value === userSelect.madeCaneYear
+                      (option) => option.value === user!.madeCaneYear
                     )}
                   />
                 </label>
               )}
             </div>
-
-            <div className="mt-[25px] flex w-full justify-end gap-x-[15px]">
-              <Dialog.Close asChild>
-                <button
-                  onClick={() => setUserSelect(null)}
-                  className="bg-red text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[36px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
-                >
-                  Cancelar
-                </button>
-              </Dialog.Close>
+            <div className="w-full">
+              <p className="text-[15px] font-[500]">Email:</p>
+              <div className="w-full p-[10px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]">
+                <p>{user!.email}</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between w-full max-xsm:flex-col gap-y-[10px]">
+              <label htmlFor="totalPresence" className="w-[46%] max-xsm:w-full">
+                <p className="text-[15px] font-[500]">
+                  Total de Presença: {user!.totalPresence}
+                </p>
+              </label>
+              <label htmlFor="lastPresence" className="w-[48%] max-xsm:w-full">
+                <p className="text-[15px] font-[500]">
+                  {"Última presença: " +
+                    toFormattedDateDDMMYYYYToString(
+                      new Date(user!.lastPresence)
+                    )}
+                </p>
+              </label>
+            </div>
+            <div className="mt-[25px] max-sm:mt-[20px] max-xsm:mt-[15px] flex w-full justify-end gap-x-[15px]">
+              <button onClick={() => closeDialog()} className="bg-red text-background hover:brightness-95 focus:shadow-green7 inline-flex py-[8px] items-center justify-center rounded-[4px] px-[15px] font-[500] leading-none focus:shadow-[0_0_0_2px] focus:outline-none ">
+                Cancelar
+              </button>
               <button
-                className="bg-primary text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+                className="bg-primary text-background hover:brightness-95 focus:shadow-green7 inline-flex items-center justify-center rounded-[4px] px-[15px] font-[500] leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
                 type={"submit"}
                 disabled={isLoading}
               >
@@ -204,7 +189,7 @@ function DialogEditUser({
           </form>
           <Dialog.Close asChild>
             <button
-              onClick={() => setUserSelect(null)}
+              ref={cancelButtonRef}
               className="absolute top-[10px] right-[10px] h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
               aria-label="Close"
             >

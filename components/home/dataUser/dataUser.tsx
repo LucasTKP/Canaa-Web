@@ -4,13 +4,14 @@ import Meetings from "../meetings/meetings";
 import { UserContext } from "@/context/userContext";
 import Image from "next/image";
 import { toFormattedDateToString } from "@/utils/functions/formmatter_date";
-import EditImageProfile from "./edit_image_profile/edit_image_profile";
+import DialogEditUser from "./dialog_edit_user/dialog_edit_user";
+
 
 function DataUser() {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   return (
-    <div className="w-fit">
+    <div className="w-fit max-xsm:w-full">
       <div className="relative z-10">
         <Image
           src={user?.photoUrl!}
@@ -22,9 +23,8 @@ function DataUser() {
       </div>
       <div className="mt-[70px] max-xl:mt-[45px] max-md:mt-[35px] max-xsm:mt-[25px]">
         <div className="flex flex-col bg-terciary/30 rounded-[10px] p-[15px] text-[20px] max-xl:text-[18px] relative">
-          <EditImageProfile user={user!} setUser={setUser} />
-
-          <p className="mt-[15px] truncate">
+          <DialogEditUser />
+          <p className="truncate">
             <span className="font-[500] w-full">Nome:</span> {user?.name}
           </p>
           <p>

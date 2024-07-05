@@ -1,31 +1,30 @@
 import { UserModel } from "@/models/user";
 import { getAllUsers, getUser, updateUser } from "@/repositories/userFireStore";
 import { deleteFile, uploadImageProfile } from "@/repositories/userStorage";
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import heic2any from "heic2any";
+import { ChangeEvent } from "react";
 import { ReactCropperElement } from "react-cropper";
 import { toast } from "react-toastify";
-import heic2any from "heic2any";
 
 interface SaveImageProfile {
   cropperRef: React.RefObject<ReactCropperElement>;
-  inputFileRef: React.RefObject<HTMLInputElement>;
   file: File;
   user: UserModel;
-  setUser: Dispatch<SetStateAction<UserModel | undefined>>;
-  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  setUser: React.Dispatch<React.SetStateAction<UserModel | undefined>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  closeDialog: () => void;
 }
 
 export async function SaveImageProfile({
   cropperRef,
-  inputFileRef,
   file,
   user,
   setUser,
-  setFile,
   setIsLoading,
+  closeDialog,
 }: SaveImageProfile) {
   setIsLoading(true);
+  closeDialog();
   const cropper = cropperRef.current?.cropper;
 
   if (!cropper) {
@@ -44,9 +43,7 @@ export async function SaveImageProfile({
       await onUpdateUser({ user, namePhoto, photoUrl: url });
       const newUser = await getUser(user.id);
 
-      if (newUser) {
-        setUser(newUser);
-      }
+      if (newUser) setUser(newUser);
 
       if (user.namePhoto !== "jesus.jpg") {
         const pathDeletePhoto = `imageProfile/${user.id}/${user.namePhoto}`;
@@ -58,9 +55,8 @@ export async function SaveImageProfile({
   } catch (e) {
     toast.error("Erro ao salvar imagem");
   } finally {
-    setFile(null);
-    clearFileInput(inputFileRef);
     setIsLoading(false);
+    closeDialog();
   }
 }
 
@@ -85,32 +81,31 @@ export async function handleFileChange({
 }: handleFileChange) {
   if (event.target.files?.length) {
     let file = event.target.files[0];
-
     if (file.size > 30000000) {
       toast.error("A imagem que você selecionou é muito grande");
       return;
     }
 
-    if (file.type === "image/heic" || file.name.includes(".heic")) {
-      const newImage = await heic2any({
-        blob: file,
-        toType: "image/jpeg",
-        quality: 1,
-      });
-
-      file = blobToFile({ theBlob: newImage, fileName: file });
-    }
-
     try {
+      if (file.type === "image/heic" || file.name.includes(".heic")) {
+        const newImage = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 1,
+        });
+
+        file = blobToFile({ theBlob: newImage, fileName: file });
+      }
+
       if (!file.type.includes("image")) {
-        return toast.error(
+        toast.error(
           "O arquivo que você selecionou não é uma imagem png/jpg/jpeg/heic"
         );
+        return;
       }
       setFile(file);
-    } catch (error) {
+    } catch (e) {
       toast.error("Erro ao converter a imagem HEIC");
-      console.error(error);
     } finally {
       clearFileInput(inputFileRef);
     }

@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useRef, useState } from "react";
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { CameraIcon } from "@radix-ui/react-icons";
@@ -14,14 +8,11 @@ import {
   clearFileInput,
   handleFileChange,
 } from "./edit_image_profile_controller";
-import { UserModel } from "@/models/user";
+import { toast } from "react-toastify";
+import { UserContext } from "@/context/userContext";
 
-interface EditImageProfileProps {
-  user: UserModel;
-  setUser: Dispatch<SetStateAction<UserModel | undefined>>;
-}
-
-function EditImageProfile({ user, setUser }: EditImageProfileProps) {
+function EditImageProfile({ closeDialog }: { closeDialog: () => void }) {
+  const { user, setUser } = useContext(UserContext);
   const cropperRef = useRef<ReactCropperElement>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -29,23 +20,28 @@ function EditImageProfile({ user, setUser }: EditImageProfileProps) {
 
   return (
     <div>
-      <label className="absolute top-0 right-0">
+      <label className="absolute bottom-0 right-0">
         <input
           ref={inputFileRef}
           type="file"
           onChange={(e) =>
-            handleFileChange({ event: e, setFile, inputFileRef })
+            toast.promise(
+              handleFileChange({ event: e, setFile, inputFileRef }),
+              {
+                pending: "Processando...",
+              }
+            )
           }
           accept="image/*"
           className="hidden"
         />
-        <div className="rounded-full p-[7px]">
-          <CameraIcon className="w-[30px] h-[30px]" />
+        <div className="bg-[#62cc6f] rounded-full p-[7px]">
+          <CameraIcon className="w-[20px] h-[20px]" />
         </div>
       </label>
 
       {file && (
-        <div className="w-screen h-screen flex justify-center items-center left-0 top-0 inset-0 fixed z-20">
+        <div className="w-full h-full flex justify-center items-center left-0 top-0 fixed z-20">
           <div
             onClick={() => {
               setFile(null);
@@ -53,18 +49,22 @@ function EditImageProfile({ user, setUser }: EditImageProfileProps) {
             }}
             className="bg-black/80 w-full h-full left-0 top-0 fixed"
           />
-          <div className="flex flex-col w-full max-w-[400px] max-xsm:max-w-[90%]">
+          <div className="flex flex-col w-full">
             <button
               onClick={() =>
-                SaveImageProfile({
-                  cropperRef,
-                  file,
-                  user,
-                  setUser,
-                  setFile,
-                  inputFileRef,
-                  setIsLoading,
-                })
+                toast.promise(
+                  SaveImageProfile({
+                    cropperRef,
+                    file,
+                    user: user!,
+                    setUser,
+                    setIsLoading,
+                    closeDialog,
+                  }),
+                  {
+                    pending: "Salvando...",
+                  }
+                )
               }
               disabled={isLoading}
               className="z-50 ml-auto bg-[#62cc6f] px-[10px] py-[2px] mr-[5px] rounded-[4px] font-[500] text-[#212121]"

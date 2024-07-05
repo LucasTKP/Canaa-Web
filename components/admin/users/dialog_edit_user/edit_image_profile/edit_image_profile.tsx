@@ -3,8 +3,13 @@ import React, { ChangeEvent, useRef, useState } from "react";
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { CameraIcon } from "@radix-ui/react-icons";
-import { SaveImageProfile, clearFileInput, handleFileChange } from "./edit_image_profile_controller";
+import {
+  SaveImageProfile,
+  clearFileInput,
+  handleFileChange,
+} from "./edit_image_profile_controller";
 import { UserModel } from "@/models/user";
+import { toast } from "react-toastify";
 
 interface EditImageProfileProps {
   user: UserModel;
@@ -15,7 +20,8 @@ interface EditImageProfileProps {
 function EditImageProfile({
   user,
   setUsers,
-  setUserSelect}: EditImageProfileProps) {
+  setUserSelect,
+}: EditImageProfileProps) {
   const cropperRef = useRef<ReactCropperElement>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -27,7 +33,14 @@ function EditImageProfile({
         <input
           ref={inputFileRef}
           type="file"
-          onChange={(e) => handleFileChange({ event: e, setFile })}
+          onChange={(e) =>
+            toast.promise(
+              handleFileChange({ event: e, setFile, inputFileRef }),
+              {
+                pending: "Processando...",
+              }
+            )
+          }
           accept="image/*"
           className="hidden"
         />
@@ -48,14 +61,19 @@ function EditImageProfile({
           <div className="flex flex-col w-full">
             <button
               onClick={() =>
-                SaveImageProfile({
-                  cropperRef,
-                  file,
-                  user,
-                  setUsers,
-                  setUserSelect,
-                  setIsLoading,
-                })
+                toast.promise(
+                  SaveImageProfile({
+                    cropperRef,
+                    file,
+                    user,
+                    setUsers,
+                    setUserSelect,
+                    setIsLoading,
+                  }),
+                  {
+                    pending: "Salvando...",
+                  }
+                )
               }
               disabled={isLoading}
               className="z-50 ml-auto bg-[#62cc6f] px-[10px] py-[2px] mr-[5px] rounded-[4px] font-[500] text-[#212121]"
