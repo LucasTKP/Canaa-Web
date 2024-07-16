@@ -70,7 +70,7 @@ export async function createTableExcel(data: UserModel[]) {
 
   const worksheet = XLSX.utils.json_to_sheet(filteredData);
   const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Canaã");
 
   const excelBuffer = XLSX.write(workbook, {
     bookType: "xlsx",
