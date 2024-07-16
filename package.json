@@ -22,7 +22,8 @@
     "react-easy-crop": "^5.0.7",
     "react-image-crop": "^11.0.5",
     "react-select": "^5.8.0",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/node": "^20",
