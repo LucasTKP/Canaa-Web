@@ -7,6 +7,8 @@ export class MeetingModel{
   password: string;
   date: Date;
   isVisible: boolean;
+  isOpen: boolean;
+
 
   constructor(
     id: string,
@@ -14,7 +16,8 @@ export class MeetingModel{
     description: string,
     password: string,
     date: Date,
-    isVisible: boolean
+    isVisible: boolean,
+    isOpen: boolean
   ) {
     this.id = id;
     this.theme = theme;
@@ -22,6 +25,7 @@ export class MeetingModel{
     this.password = password;
     this.date = date;
     this.isVisible = isVisible;
+    this.isOpen = isOpen;
   }
 
   static fromJSON(json: any): MeetingModel {
@@ -33,7 +37,8 @@ export class MeetingModel{
       json.description,
       json.password,
       date,
-      json.isVisible
+      json.isVisible,
+      json.isOpen
     );
   }
 }

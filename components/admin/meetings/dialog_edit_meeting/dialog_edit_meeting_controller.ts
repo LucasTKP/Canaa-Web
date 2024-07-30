@@ -61,6 +61,7 @@ function formatterDataMeeting({
     date: date,
     password: password.toLocaleLowerCase(),
     isVisible: formData.get("isVisible") as string == "true" ? true : false,
+    isOpen: formData.get("isOpen") as string == "true" ? true : false,
   };
 
   return dataMeeting;
@@ -71,7 +72,9 @@ function verifyDataMeeting(dataMeeting: Omit<MeetingModel, "id">): boolean {
     dataMeeting.theme.length > 0 &&
     dataMeeting.description.length > 0 &&
     dataMeeting.password.length > 0 &&
-    dataMeeting.date != null
+    dataMeeting.date != null &&
+    dataMeeting.isVisible != null &&
+    dataMeeting.isOpen != null
   ) {
     return true;
   }

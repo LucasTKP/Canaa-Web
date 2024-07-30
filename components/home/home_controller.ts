@@ -8,10 +8,8 @@ import { formatterError } from "@/utils/functions/formatter_error";
 export async function onGetMeeting(
   setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[] | null>>
 ) {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
   try {
-    const meetings = await getSomeMeetings(date);
+    const meetings = await getSomeMeetings();
 
     if (meetings !== null) setMeetings(meetings);
   } catch (error) {
@@ -20,14 +18,12 @@ export async function onGetMeeting(
 }
 
 export async function onGetPresences(
-  setPresences: React.Dispatch<React.SetStateAction<PresenceModel[] | null>>,
+  setPresences: React.Dispatch<React.SetStateAction<PresenceModel[] | null>>
 ) {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
   const user = auth.currentUser;
-  
+
   try {
-    const presences = await getPresences(date, user!.uid);
+    const presences = await getPresences(user!.uid);
 
     if (presences !== null) setPresences(presences);
   } catch (error) {

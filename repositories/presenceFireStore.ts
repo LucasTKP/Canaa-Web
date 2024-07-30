@@ -17,10 +17,9 @@ export async function createPresence(dataPresence: Omit<PresenceModel, "id">) {
   await setDoc(docRef, { ...dataPresence, id });
 }
 
-export async function getPresences(date: Date, idUser:string): Promise<Array<PresenceModel> | null> {
+export async function getPresences( idUser:string): Promise<Array<PresenceModel> | null> {
    const q = query(
      collection(db, "presences"),
-     where("date", "==", date),
      where("id_user", "==", idUser)
    );
 
