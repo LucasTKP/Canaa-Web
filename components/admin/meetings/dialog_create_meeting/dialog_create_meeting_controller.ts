@@ -52,6 +52,7 @@ function formatterDataMeeting(
     date: date,
     password: password.toLocaleLowerCase().trim(),
     isVisible: false,
+    isOpen: false
   };
 
   return dataMeeting;

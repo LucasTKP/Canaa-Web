@@ -32,18 +32,19 @@ function DialogEditMeeting({
       color: "black",
     }),
   };
+
   const options = [
     { value: true, label: "Sim" },
     { value: false, label: "Não" },
   ];
 
   return (
-    <Dialog.Root open={meetingSelect ? true : false}>
+    <Dialog.Root open={!!meetingSelect}>
       <Dialog.Trigger
         asChild
         className="bg-primary text-background px-[20px] py-[3px] font-[500] rounded-[5px] hover:brightness-95 duration-200"
       >
-        Cadastrar
+        <button>Cadastrar</button>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay
@@ -73,6 +74,7 @@ function DialogEditMeeting({
               <p className="text-[15px] font-[500]">Tema:</p>
               <input
                 className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] placeholder:text-black/60"
+                id="theme"
                 name="theme"
                 placeholder="Adicione o tema da reunião"
                 type="text"
@@ -85,6 +87,7 @@ function DialogEditMeeting({
               <p className="text-[15px] font-[500]">Descrição:</p>
               <textarea
                 className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] placeholder:text-black/60"
+                id="description"
                 name="description"
                 rows={4}
                 placeholder="Adicione a descrição da reunião"
@@ -97,6 +100,7 @@ function DialogEditMeeting({
               <p className="text-[15px] font-[500]">Data da reunião:</p>
               <input
                 className="p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                id="date"
                 name="date"
                 type="date"
                 required
@@ -110,6 +114,7 @@ function DialogEditMeeting({
               <p className="text-[15px] font-[500]">Password:</p>
               <input
                 className="w-full p-[8px] rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] placeholder:text-black/60"
+                id="password"
                 name="password"
                 placeholder="Digite a senha da reunião"
                 required
@@ -117,18 +122,33 @@ function DialogEditMeeting({
               />
             </label>
 
-            <label className="w-full" htmlFor="isVisible">
-              <p className="text-[15px] font-[500]">Visivel?</p>
-              <Select
-                options={options}
-                required={true}
-                name="isVisible"
-                styles={customStyles}
-                defaultValue={options.find(
-                  (option) => option.value === meetingSelect.isVisible
-                )}
-              />
-            </label>
+            <p className="text-[15px] font-[500]">Visível?</p>
+            <Select
+              options={options}
+              required
+              id="isVisible"
+              name="isVisible"
+              className="w-full"
+              styles={customStyles}
+              defaultValue={options.find(
+                (option) => option.value === meetingSelect.isVisible
+              )}
+            />
+
+            <p className="text-[15px] font-[500]">
+              Permitir registro de presenças?
+            </p>
+            <Select
+              options={options}
+              required
+              id="isOpen"
+              name="isOpen"
+              className="w-full"
+              styles={customStyles}
+              defaultValue={options.find(
+                (option) => option.value === meetingSelect.isOpen
+              )}
+            />
 
             <div className="mt-[25px] flex w-full justify-end gap-x-[15px]">
               <Dialog.Close asChild>
@@ -141,7 +161,7 @@ function DialogEditMeeting({
               </Dialog.Close>
               <button
                 className="bg-primary text-background hover:brightness-95 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
-                type={"submit"}
+                type="submit"
                 disabled={isLoading}
               >
                 {isLoading ? (

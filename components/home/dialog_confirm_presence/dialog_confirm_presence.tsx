@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { MeetingModel } from "@/models/meeting";
@@ -20,6 +20,13 @@ function DialogConfirmPresence({
   const { user, setUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
+  
+  useEffect(() => {
+    if (!meeting.isOpen || !meeting.isVisible) {
+      closeDialog();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function closeDialog() {
     if (cancelButtonRef.current) {

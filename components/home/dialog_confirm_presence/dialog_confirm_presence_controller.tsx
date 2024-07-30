@@ -47,7 +47,7 @@ export async function onConfirmPresence({
         lastPresence: meeting.date,
       });
 
-      const presences = await getPresences(meeting.date, user.id);
+      const presences = await getPresences(user.id);
       setUser(dataNewUser);
       setPresences(presences);
       setIsLoading(false);
