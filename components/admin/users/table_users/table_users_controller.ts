@@ -1,14 +1,21 @@
 import { UserModel } from "@/models/user";
-import { getAllUsers } from "@/repositories/userFireStore";
+import { getAllUsers, getAllUsersByMeeting } from "@/repositories/userFireStore";
 import { formatterError } from "@/utils/functions/formatter_error";
 import * as XLSX from "xlsx";
 
 interface onGetUsersProps {
   setUsers: React.Dispatch<React.SetStateAction<UserModel[]>>;
+  idMeeting?: string;
 }
-export async function onGetUsers({ setUsers }: onGetUsersProps) {
+export async function onGetUsers({ setUsers, idMeeting }: onGetUsersProps) {
+  let users: UserModel[] = [];
   try {
-    const users = await getAllUsers();
+    if (idMeeting) {
+      users = await getAllUsersByMeeting(idMeeting);
+    } else {
+      users = await getAllUsers();
+    }
+
     setUsers(sortPresencesUsers({ users, action: "desc" }));
   } catch (error) {
     console.log(error);
@@ -63,7 +70,7 @@ export function sortPresencesUsers({
 
 export async function createTableExcel(data: UserModel[]) {
   const filteredData = data.map(({ name, totalPresence, madeCane }) => ({
-    "Nome": name,
+    Nome: name,
     "Total de presenças": totalPresence,
     "Fez o Acampamento?": madeCane ? "Sim" : "Não",
   }));

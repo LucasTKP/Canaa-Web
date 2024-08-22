@@ -10,8 +10,14 @@ import {
   orderBy,
   deleteField,
 } from "firebase/firestore";
-import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import path from "path";
+import { getPresencesByMeeting } from "./presenceFireStore";
 
 interface IPropsCreateUserFireStore {
   dataAuthUser: IDataAuthUser;
@@ -56,10 +62,26 @@ export async function getAllUsers(): Promise<Array<UserModel>> {
   return users;
 }
 
+export async function getAllUsersByMeeting(
+  idMeeting: string
+): Promise<Array<UserModel>> {
+  const allPresences = await getPresencesByMeeting(idMeeting);
+  const users: Array<UserModel> = [];
+  if (allPresences && allPresences.length > 0) {
+    const querySnapshot = await getDocs(collection(db, "users"));
+
+    querySnapshot.forEach((doc) => {
+      const user = UserModel.fromJSON(doc.data());
+      if (allPresences.find((presence) => presence.id_user == user.id)) {
+        users.push(user);
+      }
+    });
+  }
+  return users;
+}
+
 export async function updateUser(data: UserModel) {
   await updateDoc(doc(db, "users", data.id), {
     ...data,
   });
 }
-
-

@@ -1,4 +1,4 @@
-import { PresenceModel } from '@/models/presence';
+import { PresenceModel } from "@/models/presence";
 import { db } from "@/lib/firebase_config";
 import { MeetingModel } from "@/models/meeting";
 import {
@@ -17,19 +17,37 @@ export async function createPresence(dataPresence: Omit<PresenceModel, "id">) {
   await setDoc(docRef, { ...dataPresence, id });
 }
 
-export async function getPresences( idUser:string): Promise<Array<PresenceModel> | null> {
-   const q = query(
-     collection(db, "presences"),
-     where("id_user", "==", idUser)
-   );
+export async function getPresences(
+  idUser: string
+): Promise<Array<PresenceModel> | null> {
+  const q = query(collection(db, "presences"), where("id_user", "==", idUser));
 
-   const querySnapshot = await getDocs(q);
-   const precences: Array<PresenceModel> = [];
-   querySnapshot.forEach((doc) => {
-     precences.push(PresenceModel.fromJSON(doc.data()));
-   });
-   if (precences.length > 0) {
-     return precences;
-   }
-   return null;
+  const querySnapshot = await getDocs(q);
+  const precences: Array<PresenceModel> = [];
+  querySnapshot.forEach((doc) => {
+    precences.push(PresenceModel.fromJSON(doc.data()));
+  });
+  if (precences.length > 0) {
+    return precences;
+  }
+  return null;
+}
+
+export async function getPresencesByMeeting(
+  idMeeting: string
+): Promise<Array<PresenceModel> | null> {
+  const q = query(
+    collection(db, "presences"),
+    where("id_meeting", "==", idMeeting)
+  );
+
+  const querySnapshot = await getDocs(q);
+  const precences: Array<PresenceModel> = [];
+  querySnapshot.forEach((doc) => {
+    precences.push(PresenceModel.fromJSON(doc.data()));
+  });
+  if (precences.length > 0) {
+    return precences;
+  }
+  return null;
 }

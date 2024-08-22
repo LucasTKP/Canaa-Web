@@ -22,7 +22,11 @@ interface typeFilters {
   presences: "asc" | "desc";
 }
 
-function TableUsers() {
+interface TebleUsersProps {
+  idMeeting?: string;
+}
+
+function TableUsers({ idMeeting }: TebleUsersProps) {
   const [users, setUsers] = useState<UserModel[]>([]);
   const [userSelect, setUserSelect] = useState<UserModel | null>(null);
   const [textSearch, setTextSearch] = useState<string>("");
@@ -38,7 +42,8 @@ function TableUsers() {
   });
 
   useEffect(() => {
-    onGetUsers({ setUsers: setUsers });
+    onGetUsers({ setUsers: setUsers, idMeeting: idMeeting });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleFilterLastPresence() {
