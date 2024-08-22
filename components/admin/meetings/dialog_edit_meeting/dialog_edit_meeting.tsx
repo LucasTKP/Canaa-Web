@@ -6,6 +6,7 @@ import { onEditMeeting } from "./dialog_edit_meeting_controller";
 import { MeetingModel } from "@/models/meeting";
 import { toFormattedDateYYYYMMDDToString } from "@/utils/functions/formmatter_date";
 import Select, { StylesConfig } from "react-select";
+import Link from "next/link";
 
 interface DialogEditMeetingProps {
   setMeetings: React.Dispatch<React.SetStateAction<MeetingModel[]>>;
@@ -40,12 +41,6 @@ function DialogEditMeeting({
 
   return (
     <Dialog.Root open={!!meetingSelect}>
-      <Dialog.Trigger
-        asChild
-        className="bg-primary text-background px-[20px] py-[3px] font-[500] rounded-[5px] hover:brightness-95 duration-200"
-      >
-        <button>Cadastrar</button>
-      </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay
           className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-10"
@@ -55,7 +50,7 @@ function DialogEditMeeting({
           <Dialog.Title className="text-[20px] font-medium">
             Edite esta reunião
           </Dialog.Title>
-          <Dialog.Description className="mt-[10px] mb-5 text-[15px]">
+          <Dialog.Description className="mt-[10px] mb-[5px] text-[15px]">
             Modifique as informações da reunião nos campos abaixo
           </Dialog.Description>
           <form
@@ -122,35 +117,45 @@ function DialogEditMeeting({
               />
             </label>
 
-            <p className="text-[15px] font-[500]">Visível?</p>
-            <Select
-              options={options}
-              required
-              id="isVisible"
-              name="isVisible"
-              className="w-full"
-              styles={customStyles}
-              defaultValue={options.find(
-                (option) => option.value === meetingSelect.isVisible
-              )}
-            />
+            <div className="w-full">
+              <p className="text-[15px] font-[500]">Visível?</p>
+              <Select
+                options={options}
+                required
+                id="isVisible"
+                name="isVisible"
+                className="w-full"
+                styles={customStyles}
+                defaultValue={options.find(
+                  (option) => option.value === meetingSelect.isVisible
+                )}
+              />
+            </div>
 
-            <p className="text-[15px] font-[500]">
-              Permitir registro de presenças?
-            </p>
-            <Select
-              options={options}
-              required
-              id="isOpen"
-              name="isOpen"
-              className="w-full"
-              styles={customStyles}
-              defaultValue={options.find(
-                (option) => option.value === meetingSelect.isOpen
-              )}
-            />
+            <div className="w-full">
+              <p className="text-[15px] font-[500]">
+                Permitir registro de presenças?
+              </p>
+              <Select
+                options={options}
+                required
+                id="isOpen"
+                name="isOpen"
+                className="w-full"
+                styles={customStyles}
+                defaultValue={options.find(
+                  (option) => option.value === meetingSelect.isOpen
+                )}
+              />
+            </div>
 
-            <div className="mt-[25px] flex w-full justify-end gap-x-[15px]">
+            <div className="mt-[15px] flex w-full justify-end gap-x-[15px]">
+              <Link
+                href={`/admin/${meetingSelect.id}/${meetingSelect.theme}`}
+                className="bg-background text-black border-black border-[2px] hover:brightness-95 focus:shadow-green7 inline-flex h-[36px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none mr-auto"
+              >
+                <p>Presenças</p>
+              </Link>
               <Dialog.Close asChild>
                 <button
                   onClick={() => setMeetingSelect(null)}
