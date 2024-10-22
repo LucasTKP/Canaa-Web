@@ -69,10 +69,12 @@ export function sortPresencesUsers({
 }
 
 export async function createTableExcel(data: UserModel[]) {
-  const filteredData = data.map(({ name, totalPresence, madeCane }) => ({
-    Nome: name,
+  const filteredData = data.map(({ name, totalPresence, madeCane, madeCaneYear, lastPresence }) => ({
+    "Nome": name,
     "Total de presenças": totalPresence,
     "Fez o Acampamento?": madeCane ? "Sim" : "Não",
+    "Fez o Acampamento em": madeCaneYear,
+    "Última presenca": lastPresence
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(filteredData);
