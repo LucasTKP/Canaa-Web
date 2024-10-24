@@ -152,7 +152,7 @@ function DialogEditMeeting({
             <div className="mt-[15px] flex w-full justify-end gap-x-[15px]">
               <Link
                 href={`/admin/${meetingSelect.id}/${meetingSelect.theme}`}
-                className="bg-background text-black border-black border-[2px] hover:brightness-95 focus:shadow-green7 inline-flex h-[36px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none mr-auto"
+                className="bg-background text-black outline outline-black outline-offset-[-2px] outline-[2px] hover:brightness-95 focus:shadow-green7 inline-flex h-[36px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none mr-auto"
               >
                 <p>Presenças</p>
               </Link>
