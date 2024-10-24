@@ -1,4 +1,4 @@
-import { db, storage } from "@/lib/firebase_config";
+import { db } from "@/lib/firebase_config";
 import { IDataAuthUser, UserModel } from "@/models/user";
 import {
   setDoc,
@@ -7,16 +7,7 @@ import {
   updateDoc,
   collection,
   getDocs,
-  orderBy,
-  deleteField,
 } from "firebase/firestore";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
-import path from "path";
 import { getPresencesByMeeting } from "./presenceFireStore";
 
 interface IPropsCreateUserFireStore {
